@@ -39,7 +39,7 @@ export const sendVerificationEmail = async (email, token) => {
 
             <div style="text-align: center; font-size: 14px; color: #444;">
               <p>Explora más:</p>
-              <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 16px 0;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 10; margin: 16px 0;">
                 <a href="https://emprenet.work" target="_blank" style="text-decoration: none; color: #111; display: inline-flex; align-items: center; gap: 6px;">
                   <img src="https://cdn.emprenet.work/Icons/png/Favicon_EmNet.png" alt="EmpreNet" width="18px" height="18px" />
                   Oficial Site
@@ -49,8 +49,8 @@ export const sendVerificationEmail = async (email, token) => {
                   @Emprenet.git
                 </a>
                 <a href="https://unidadestecno-my.sharepoint.com/:f:/g/personal/jasocha_uts_edu_co/EhTaGE0X9udOlcGW2Ke_ih0BsoenjeXxP31VEgy3CkkGxw?e=R8M9t" target="_blank" style="text-decoration: none; color: #111; display: inline-flex; align-items: center; gap: 6px;">
-                  <img src="https://cdn.emprenet.work/Icons/png/github-logo.png" alt="GitHub" width="18px" height="18px" />
-		  Documents
+                  <img src="https://cdn.emprenet.work/Icons/png/one_drive.png" alt="GitHub" width="18px" height="18px" />
+                  Documents
                 </a>
               </div>
               <p style="font-size: 12px; color: #888; margin-top: 24px;">
