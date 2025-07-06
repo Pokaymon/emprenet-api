@@ -3,6 +3,8 @@ import { config } from "dotenv";
 config();
 
 export default {
+  // GENERAL
+  server_port: process.env.SERVER_PORT,
   // MYSQL
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,

@@ -1,23 +1,37 @@
 import User from "../../models/User.js";
 
 export const verifyEmail = async (req, res) => {
-    const { token } = req.query;
+  const { token } = req.query;
 
-    if (!token) {
-        return res.status(400).json({ message: 'Token no proporcionado' });
+  if (!token) {
+    return res.status(400).render('email/verify-result', {
+      title: 'Token no proporcionado',
+      message: 'No se ha encontrado un token válido para la verificación del correo electrónico.'
+    });
+  }
+
+  try {
+    const user = await User.findByVerificationToken(token);
+
+    if (!user) {
+      return res.status(400).render('email/verify-result', {
+        title: 'Token inválido o expirado',
+        message: 'El enlace de verificación ya expiró o es inválido. Si es necesario, solicita uno nuevo.'
+      });
     }
 
-    try {
-        const user = await User.findByVerificationToken(token);
+    await User.verifyEmail(user.id);
 
-        if (!user) {
-            return res.status(400).json({ message: 'Token invalido o expirado' });
-        }
+    return res.status(200).render('email/verify-result', {
+      title: '¡Correo verificado con éxito!',
+      message: 'Gracias por verificar tu correo. Ya puedes iniciar sesión en EmpreNet.'
+    });
 
-        await User.verifyEmail(user.id);
-        return res.status(200).json({ message: 'Correo verificado con éxito. Ya puedes iniciar sesión.' });
-    } catch {
-        console.error('Error al verificar correo: ', error);
-        return res.status(500).json({ message: 'Error interno del servidor' });
-    }
+  } catch (error) {
+    console.error('Error al verificar correo: ', error);
+    return res.status(500).render('email/verify-result', {
+      title: 'Error del servidor',
+      message: 'Ocurrió un error inesperado durante la verificación. Intenta de nuevo más tarde.'
+    });
+  }
 };
