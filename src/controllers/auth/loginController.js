@@ -28,8 +28,8 @@ export const loginUser = async (req, res) => {
     // Token JWT
     const token = jwt.sign(
       { id: user.id, username: user.username, email: user.email },
-      config.jwtSecret,
-      { expiresIn: config.jwtExpiresIn }
+      config.jwt_secret,
+      { expiresIn: config.jwt_expires_in }
     );
 
     return res.status(200).json({

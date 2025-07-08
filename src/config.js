@@ -15,5 +15,8 @@ export default {
   smtp_host: process.env.SMTP_HOST,
   smtp_port: process.env.SMTP_PORT,
   smtp_user: process.env.SMTP_USER,
-  smtp_pass: process.env.SMTP_PASS
-}
+  smtp_pass: process.env.SMTP_PASS,
+  // JWT
+  jwt_secret: process.env.JWT_SECRET,
+  jwt_expires_in: process.env.JWT_EXPIRES_IN
+};
