@@ -4,6 +4,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import config from './config.js'
 
+// OAuth
+import passport from './services/passport.js';
+import session from 'express-session';
+
 /* Import Routes */
 import apiRoutes from './routes/api.routes.js';
 
@@ -15,6 +19,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Passport
+app.use(session({
+  secret: config.jwt_secret,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 /* Configurar motor de vistas EJS */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,13 +39,13 @@ app.use(express.static(path.join(__dirname, 'views')));
 /* API Routes */
 app.use('/api', apiRoutes);
 
-/* Redirección no permitida GET en /api */
+/* Redirección no permitida GET en /api
 app.use('/api', (req, res, next) => {
   if (req.method === 'GET') {
     return res.redirect('/');
   }
   next();
-});
+}); */
 
 /* Ruta raíz */
 app.get('/', (req, res) => {

@@ -18,5 +18,9 @@ export default {
   smtp_pass: process.env.SMTP_PASS,
   // JWT
   jwt_secret: process.env.JWT_SECRET,
-  jwt_expires_in: process.env.JWT_EXPIRES_IN
+  jwt_expires_in: process.env.JWT_EXPIRES_IN,
+  // OAuth
+  google_client_id: process.env.GOOGLE_CLIENT_ID,
+  google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
+  google_callback_url: process.env.GOOGLE_CALLBACK_URL
 };
