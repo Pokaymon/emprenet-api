@@ -19,8 +19,12 @@ export default {
   // JWT
   jwt_secret: process.env.JWT_SECRET,
   jwt_expires_in: process.env.JWT_EXPIRES_IN,
-  // OAuth
+  // OAuth Google
   google_client_id: process.env.GOOGLE_CLIENT_ID,
   google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
-  google_callback_url: process.env.GOOGLE_CALLBACK_URL
+  google_callback_url: process.env.GOOGLE_CALLBACK_URL,
+  // OAuth Microsoft
+  microsoft_client_id: process.env.MICROSOFT_CLIENT_ID,
+  microsoft_client_secret: process.env.MICROSOFT_CLIENT_SECRET,
+  microsoft_callback_url: process.env.MICROSOFT_CALLBACK_URL
 };
