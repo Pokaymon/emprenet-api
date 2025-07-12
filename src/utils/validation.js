@@ -1,6 +1,6 @@
 // Validar campos
 export const validateRequiredFields = (fields) => {
-  return Objet.entries(fields).every(([key, value]) => value !== undefined && value !== '');
+  return Object.entries(fields).every(([key, value]) => value !== undefined && value !== '');
 };
 
 // Match de contraseñas

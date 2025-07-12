@@ -35,24 +35,4 @@ router.get('/auth/google/callback',
   }
 );
 
-// Login OAuth Microsoft
-router.get('/auth/microsoft',
-  passport.authenticate('microsoft', { scope: ['user.read'] })
-);
-
-// Callback de Microsoft
-router.get('/auth/microsoft/callback',
-  passport.authenticate('microsoft', { session: false, failureRedirect: '/' }),
-  (req, res) => {
-    const user = req.user;
-    const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
-      config.jwt_secret,
-      { expiresIn: config.jwt_expires_in }
-    );
-
-    res.redirect(`/?token=${token}`);
-  }
-);
-
 export default router;

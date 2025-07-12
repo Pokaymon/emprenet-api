@@ -33,35 +33,6 @@ async (accessToken, refreshToken, profile, done) => {
   }
 }));
 
-// Microsft Strategy
-passport.use(new MicrosoftStrategy({
-  clientID: config.microsoft_client_id,
-  clientSecret: config.microsoft_client_secret,
-  callbackURL: config.microsoft_callback_url,
-  scope: ['user.read'],
-  tenant: 'common' // Cuentas Personales y Empresariales
-}, async (accesToken, refreshToken, profile, done) => {
-  try {
-    const email = profile.emails?.[0]?.value || profile._json.mail || profile._json.userPrincipalName;
-    const username = profile.displayName;
-
-    let user = await User.findByEmail(email);
-    if (!user) {
-      await User.create({
-        username,
-        email,
-        password: null,
-        verification_token: null
-      });
-      user = await User.findByEmail(email);
-    }
-
-    return done(null, user);
-  } catch (err) {
-    done(err, null);
-  }
-}));
-
 // Serialización para uso de sesiones
 passport.serializeUser((user, done) => {
   done(null, user.id);
