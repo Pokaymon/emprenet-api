@@ -11,6 +11,8 @@ export default {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  // MONGO
+  mongodb_uri: process.env.MONGO_URI,
   // SMTP
   smtp_host: process.env.SMTP_HOST,
   smtp_port: process.env.SMTP_PORT,
@@ -23,8 +25,4 @@ export default {
   google_client_id: process.env.GOOGLE_CLIENT_ID,
   google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
   google_callback_url: process.env.GOOGLE_CALLBACK_URL,
-  // OAuth Microsoft
-  microsoft_client_id: process.env.MICROSOFT_CLIENT_ID,
-  microsoft_client_secret: process.env.MICROSOFT_CLIENT_SECRET,
-  microsoft_callback_url: process.env.MICROSOFT_CALLBACK_URL
 };

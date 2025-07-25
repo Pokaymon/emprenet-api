@@ -4,6 +4,9 @@ import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 import User from '../models/User.js';
 import config from '../config.js';
 
+// Utils
+import { generateUniqueUsername } from '../utils/username.js'
+
 // Google Strategy
 passport.use(new GoogleStrategy({
   clientID: config.google_client_id,
@@ -14,12 +17,15 @@ passport.use(new GoogleStrategy({
 async (accessToken, refreshToken, profile, done) => {
   try {
     const email = profile.emails[0].value;
-    const username = profile.displayName;
+    const displayName = profile.displayName;
 
     let user = await User.findByEmail(email);
     if (!user) {
+
+      const uniqueUsername = await generateUniqueUsername(displayName);
+
       await User.create({
-        username,
+        username: uniqueUsername,
         email,
         password: null,
         verification_token: null

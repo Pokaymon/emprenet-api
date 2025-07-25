@@ -9,7 +9,7 @@ import passport from './services/passport.js';
 import session from 'express-session';
 
 /* Import Routes */
-import apiRoutes from './routes/api.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,7 +37,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'views')));
 
 /* API Routes */
-app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
 
 /* Redirección no permitida GET en /api
 app.use('/api', (req, res, next) => {

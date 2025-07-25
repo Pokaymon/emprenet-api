@@ -13,15 +13,15 @@ const router = express.Router();
 // Login / Register EmpreNet
 router.post('/login', loginUser);
 router.post('/register', registerUser);
-router.get('/auth/verify-email', verifyEmail);
+router.get('/verify-email', verifyEmail);
 
 // Login OAuth Google
-router.get('/auth/google',
+router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 // Callback de Google
-router.get('/auth/google/callback',
+router.get('/google/callback',
   passport.authenticate('google', { session: false, failureRedirect: '/' }),
   (req, res) => {
     const user = req.user;

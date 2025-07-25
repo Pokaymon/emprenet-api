@@ -22,7 +22,7 @@ const renderTemplate = async (templateName, data) => {
 };
 
 export const sendVerificationEmail = async (email, token) => {
-  const verificationLink = `https://api.emprenet.work/api/auth/verify-email?token=${token}`;
+  const verificationLink = `https://api.emprenet.work/auth/verify-email?token=${token}`;
 
   const html = await renderTemplate('verify-email', { verificationLink });
 
