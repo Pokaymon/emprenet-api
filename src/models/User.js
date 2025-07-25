@@ -17,10 +17,10 @@ const User = {
     return result[0];
   },
 
-  async create({ username, email, password, verification_token = null }) {
+  async create({ username, email, password, verification_token = null, email_verified = false }) {
     await this.query(
-      'INSERT INTO users (username, email, password, verification_token) VALUES (?, ?, ?, ?)',
-      [username, email, password, verification_token]
+      'INSERT INTO users (username, email, password, verification_token, email_verified) VALUES (?, ?, ?, ?, ?)',
+      [username, email, password, verification_token, email_verified]
     );
   },
 

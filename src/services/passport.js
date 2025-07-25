@@ -28,7 +28,8 @@ async (accessToken, refreshToken, profile, done) => {
         username: uniqueUsername,
         email,
         password: null,
-        verification_token: null
+        verification_token: null,
+	email_verified: true
       });
       user = await User.findByEmail(email);
     }
