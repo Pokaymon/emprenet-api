@@ -1,7 +1,10 @@
 import express from 'express';
+import authMiddleware from '../middlewares/authMiddleware.js';
 import { registerUser } from '../controllers/auth/registerController.js';
 import { verifyEmail } from '../controllers/auth/verifyEmailController.js';
 import { loginUser } from '../controllers/auth/loginController.js';
+import { resendVerificationEmail } from '../controllers/auth/resendVerificationController.js';
+import { changeEmail } from '../controllers/auth/changeEmailController.js';
 
 // Para OAuth
 import passport from '../services/passport.js';
@@ -34,5 +37,10 @@ router.get('/google/callback',
     res.redirect(`/?token=${token}`);
   }
 );
+
+// PATCH Resend Verification_Link
+router.patch('/email/resend-verification', authMiddleware, resendVerificationEmail);
+// PATCH Cambiar Email
+router.patch('/email/change', authMiddleware, changeEmail);
 
 export default router;

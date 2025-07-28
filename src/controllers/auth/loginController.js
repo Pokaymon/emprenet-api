@@ -14,8 +14,11 @@ export const loginUser = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password)))
       return res.status(401).json({ message: 'Credenciales inválidas' });
 
+    /*
+    Ya no bloquear login, el frontend debe mostrar alerta para verificar correo
     if (!user.email_verified)
       return res.status(403).json({ message: 'Verifica tu correo antes de iniciar sesión.' });
+    */
 
     const token = jwt.sign(
       { id: user.id, username: user.username, email: user.email },
@@ -26,7 +29,10 @@ export const loginUser = async (req, res) => {
     return res.status(200).json({
       message: 'Inicio de sesión exitoso',
       token,
-      user: { id: user.id, username: user.username, email: user.email }
+      user: { id: user.id, username: user.username, email: user.email },
+      warning: user.email_verified
+	? null
+	: 'Tu correo aún no ha sido verificado. Algunas funcionalidades estaran limitadas.'
     });
   } catch (error) {
     console.error('Error al iniciar sesión:', error);

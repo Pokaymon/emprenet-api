@@ -17,10 +17,18 @@ const User = {
     return result[0];
   },
 
-  async create({ username, email, password, verification_token = null, email_verified = false }) {
+  async create ({
+    username,
+    email,
+    password,
+    verification_token = null,
+    email_verified = false,
+    verification_token_expires_at = null,
+    last_verification_email_sent_at = null
+  }) {
     await this.query(
-      'INSERT INTO users (username, email, password, verification_token, email_verified) VALUES (?, ?, ?, ?, ?)',
-      [username, email, password, verification_token, email_verified]
+      'INSERT INTO users (username, email, password, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [username, email, password, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
     );
   },
 
@@ -45,7 +53,7 @@ const User = {
 
   async verifyEmail(userId) {
     await this.query(
-      'UPDATE users SET email_verified = true, verification_token = NULL WHERE id = ?',
+      'UPDATE users SET email_verified = true, verification_token = NULL, verification_token_expires_at = NULL, last_verification_email_sent_at = NULL WHERE id = ?',
       [userId]
     );
   },

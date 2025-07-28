@@ -13,10 +13,10 @@ export const verifyEmail = async (req, res) => {
   try {
     const user = await User.findByVerificationToken(token);
 
-    if (!user) {
+    if (!user || !user.verification_token_expires_at || new Date() > new Date(user.verification_token_expires_at)) {
       return res.status(400).render('email/verify-result', {
         title: 'Token inválido o expirado',
-        message: 'El enlace de verificación ya expiró o es inválido. Si es necesario, solicita uno nuevo.'
+        message: 'El enlace de verificación ya expiró o es inválido. Solicita uno nuevo desde tu perfil.'
       });
     }
 

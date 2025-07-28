@@ -6,7 +6,9 @@ export function up(knex) {
     table.string('password', 255);
     table.boolean('email_verified').defaultTo(false);
     table.string('verification_token', 255).nullable();
-    table.timestamps(true, true); // created_at y updated_at con default a NOW()
+    table.dateTime('verification_token_expires_at').nullable();
+    table.timestamp('last_verification_email_sent_at').nullable();
+    table.timestamps(true, true);
   });
 }
 
