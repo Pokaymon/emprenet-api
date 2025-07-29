@@ -28,6 +28,7 @@ async (accessToken, refreshToken, profile, done) => {
         username: uniqueUsername,
         email,
         password: null,
+        auth_provider: 'google',
         verification_token: null,
 	email_verified: true
       });

@@ -1,5 +1,11 @@
+// Principal
 import express from 'express';
+
+// Middlewares
 import authMiddleware from '../middlewares/authMiddleware.js';
+import blockOAuthUsers from '../middlewares/blockOAuthUsers.js';
+
+// Controllers
 import { registerUser } from '../controllers/auth/registerController.js';
 import { verifyEmail } from '../controllers/auth/verifyEmailController.js';
 import { loginUser } from '../controllers/auth/loginController.js';
@@ -29,7 +35,7 @@ router.get('/google/callback',
   (req, res) => {
     const user = req.user;
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
+      { id: user.id, username: user.username, email: user.email, auth_provider: user.auth_provider },
       config.jwt_secret,
       { expiresIn: config.jwt_expires_in }
     );
@@ -41,6 +47,6 @@ router.get('/google/callback',
 // PATCH Resend Verification_Link
 router.patch('/email/resend-verification', authMiddleware, resendVerificationEmail);
 // PATCH Cambiar Email
-router.patch('/email/change', authMiddleware, changeEmail);
+router.patch('/email/change', authMiddleware, blockOAuthUsers, changeEmail);
 
 export default router;

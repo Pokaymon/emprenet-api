@@ -21,14 +21,15 @@ const User = {
     username,
     email,
     password,
+    auth_provider = 'local',
     verification_token = null,
     email_verified = false,
     verification_token_expires_at = null,
     last_verification_email_sent_at = null
   }) {
     await this.query(
-      'INSERT INTO users (username, email, password, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [username, email, password, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
+      'INSERT INTO users (username, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [username, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
     );
   },
 

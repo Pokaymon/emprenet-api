@@ -34,6 +34,7 @@ export const registerUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      auth_provider: 'local',
       verification_token,
       verification_token_expires_at: tokenExpiresAt,
       last_verification_email_sent_at: now
