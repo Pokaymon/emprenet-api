@@ -35,6 +35,7 @@ app.set('view engine', 'ejs');
 
 /* Rutas estáticas */
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 /* API Routes */
 app.use('/auth', authRoutes);
