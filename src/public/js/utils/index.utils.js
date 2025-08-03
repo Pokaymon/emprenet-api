@@ -1,28 +1,23 @@
-export function updateUIBasedOnToken({ loginForm, loginButton, userImage }) {
+export function updateAuthUI({ loginFormContainer, loginButton, userImage }) {
   const token = localStorage.getItem('token');
   const isAuthenticated = Boolean(token);
 
-  if (loginForm) {
-    loginForm.classList.toggle('opacity-0', isAuthenticated);
-    loginForm.classList.toggle('pointer-events-none', isAuthenticated);
-  }
-
-  if (loginButton) {
-    loginButton.classList.toggle('opacity-0', isAuthenticated);
-    loginButton.classList.toggle('pointer-events-none', isAuthenticated);
-  }
-
-  if (userImage) {
-    userImage.classList.toggle('opacity-0', !isAuthenticated);
-    userImage.classList.toggle('pointer-events-none', !isAuthenticated);
-  }
+  toggleVisibility(loginFormContainer, !isAuthenticated);
+  toggleVisibility(loginButton, !isAuthenticated);
+  toggleVisibility(userImage, isAuthenticated);
 }
 
-export async function handleLogin(e, loginForm, loginFormCamps, onSuccess) {
+function toggleVisibility(element, show) {
+  if (!element) return;
+  element.classList.toggle('opacity-0', !show);
+  element.classList.toggle('pointer-events-none', !show);
+}
+
+export async function handleLogin(e, loginFormContainer, loginFormFields, onSuccess) {
   e.preventDefault();
 
-  const email = loginForm.querySelector('input[type="email"]').value;
-  const password = loginForm.querySelector('input[type="password"]').value;
+  const email = loginFormFields.querySelector('input[type="email"]').value;
+  const password = loginFormFields.querySelector('input[type="password"]').value;
 
   try {
     const response = await fetch('https://api.emprenet.work/auth/login', {
@@ -49,7 +44,7 @@ export async function handleLogin(e, loginForm, loginFormCamps, onSuccess) {
       text: data.warning || data.message
     });
 
-    loginFormCamps.reset();
+    loginFormFields.reset();
 
     if (typeof onSuccess === 'function') {
       onSuccess();
@@ -63,4 +58,15 @@ export async function handleLogin(e, loginForm, loginFormCamps, onSuccess) {
       text: 'No se pudo conectar al servidor.'
     });
   }
+}
+
+export function closeSidebar(sidebar) {
+  if (!sidebar || sidebar.classList.contains('translate-x-full')) return;
+  sidebar.classList.add('translate-x-full');
+  sidebar.classList.remove('translate-x-0');
+}
+
+export function getTokenFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('token');
 }
