@@ -1,21 +1,17 @@
 import mysql from "mysql2/promise";
 import config from "./../config.js";
 
-let connection;
+const pool = mysql.createPool({
+  host: config.host,
+  user: config.user,
+  password: config.password,
+  database: config.database,
+  port: config.port,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-const getConnection = async () => {
-    if (!connection) {
-        connection = await mysql.createConnection({
-            host: config.host,
-            database: config.database,
-            user: config.user,
-            password: config.password,
-	    port: config.port
-        });
-    }
-    return connection;
-};
+console.log('🛠️ Pool de conexiones MySQL inicializado');
 
-console.log("🔐 Conectando con:", config);
-
-export default getConnection;
+export default pool;

@@ -1,9 +1,8 @@
-import getConnection from '../db/database.js';
+import db from '../db/database.js';
 
 const User = {
   async query(sql, params = []) {
-    const conn = await getConnection();
-    const [result] = await conn.query(sql, params);
+    const [result] = await db.query(sql, params);
     return result;
   },
 
