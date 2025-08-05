@@ -5,6 +5,8 @@ import {
   getTokenFromURL
 } from './utils/index.utils.js';
 
+import { showProfileModal } from './utils/modal.utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     loginFormContainer: document.querySelector('[data-role="login-form-container"]'),
@@ -54,4 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAuthUI(elements);
     closeSidebar(elements.sidebar);
   });
+
+  // Cargar contenido en el profile modal
+  const profileLink = document.querySelector('[data-role="profile-link"]');
+  profileLink?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const user = JSON.parse(atob(token.split('.')[1]));
+    const username = user?.username || 'Usuario';
+    const email = user?.email || 'example@ejemplo.com';
+
+    showProfileModal(username, email);
+  });
+
 });
