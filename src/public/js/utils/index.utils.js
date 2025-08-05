@@ -1,3 +1,14 @@
+function parseJwt(token) {
+  try {
+    const base64Payload = token.split('.')[1];
+    const payload = atob(base64Payload);
+    return JSON.parse(payload);
+  } catch (e) {
+    console.error('Token invalido:', e);
+    return null;
+  }
+}
+
 export function updateAuthUI({ loginFormContainer, loginButton, userImage }) {
   const token = localStorage.getItem('token');
   const isAuthenticated = Boolean(token);
@@ -5,6 +16,18 @@ export function updateAuthUI({ loginFormContainer, loginButton, userImage }) {
   toggleVisibility(loginFormContainer, !isAuthenticated);
   toggleVisibility(loginButton, !isAuthenticated);
   toggleVisibility(userImage, isAuthenticated);
+
+  if (isAuthenticated) {
+    const user = parseJwt(token);
+    const username = user?.username || 'Usuario';
+    const email = user?.email || 'example@ejemplo.com';
+
+    const usernameUI = document.querySelector('[data-role="sidebar-username"]');
+    const emailUI = document.querySelector('[data-role="sidebar-email"]');
+
+    if (usernameUI) usernameUI.textContent = username;
+    if (emailUI) emailUI.textContent = email;
+  }
 }
 
 function toggleVisibility(element, show) {

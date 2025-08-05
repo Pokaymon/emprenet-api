@@ -125,12 +125,41 @@
       </main>
 
       <!-- Sidebar -->
-      <aside data-role="sidebar" class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-	<nav class="flex flex-col p-6 space-y-4">
-	  <a href="#" class="text-lg font-bold hover:text-blue-600">Perfil</a>
-	  <a href="#" class="text-lg font-bold hover:text-blue-600">Ajustes</a>
-	  <a data-role="logout-button" href="#" class="text-lg font-bold hover:text-blue-600">Cerrar sesión</a>
-	</nav>
+      <aside data-role="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-gray-900 shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
+        <!-- Contenido superior -->
+        <div class="flex flex-col items-center space-y-4">
+          <!-- Foto de perfil -->
+          <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500">
+            <img
+              data-role="sidebar-avatar"
+              src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+              alt="Avatar"
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- User Info -->
+          <div class="text-center">
+            <p data-role="sidebar-username" class="text-lg font-semibold text-gray-800 dark:text-gray-100">Nombre</p>
+            <p data-role="sidebar-email" class="text-sm text-gray-500 dark:text-gray-400">example@ejemplo.com</p>
+          </div>
+
+          <!-- Acciones principales -->
+          <div class="w-full flex flex-col gap-4 pt-6">
+            <a href="#" class="text-center text-blue-600 font-semibold hover:underline">Perfil</a>
+            <a href="#" class="text-center text-blue-600 font-semibold hover:underline">Ajustes</a>
+          </div>
+        </div>
+
+        <!-- Botón de logout al fondo -->
+        <div class="mt-auto w-full">
+          <button
+            data-role="logout-button"
+            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded transition duration-300"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </aside>
 
       <!-- FOOTER -->
