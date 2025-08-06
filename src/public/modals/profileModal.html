@@ -14,7 +14,11 @@
       disabled
     />
 
-    <div class="flex justify-end gap-2 mt-4">
+  <!-- Botones de acción -->
+  <div class="flex flex-col gap-3 mt-4">
+
+    <!-- Botones de editar/guardar -->
+    <div class="flex justify-end gap-2">
       <button
         data-role="modal-edit-email"
         class="text-blue-600 font-semibold hover:underline"
@@ -28,19 +32,20 @@
       >
         Guardar
       </button>
-
-      <!-- Reenviar Verificación -->
-      <button 
-        data-role="modal-resend-verification"
-        class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded"
-      >
-        Verificar correo
-      </button>
     </div>
 
+    <!-- Botón de verificación -->
+    <button
+      data-role="modal-resend-verification"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Verificar correo
+    </button>
+
+    <!-- Cerrar -->
     <button
       data-role="modal-close"
-      class="mt-6 text-center w-full bg-gray-300 hover:bg-gray-400 text-gray-900 font-bold py-2 rounded"
+      class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-900 font-bold py-2 rounded"
     >
       Cerrar
     </button>

@@ -67,8 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(atob(token.split('.')[1]));
     const username = user?.username || 'Usuario';
     const email = user?.email || 'example@ejemplo.com';
+    const email_verified = user.email_verified;
 
-    showProfileModal(username, email);
+    showProfileModal(username, email, email_verified);
   });
 
 });

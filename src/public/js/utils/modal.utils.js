@@ -1,4 +1,4 @@
-export async function showProfileModal(username, email) {
+export async function showProfileModal(username, email, email_verified = false) {
   const existing = document.getElementById('profile-modal-overlay');
   if (existing) existing.remove();
 
@@ -71,4 +71,52 @@ export async function showProfileModal(username, email) {
       Swal.fire('Error', err.message, 'error');
     }
   });
+
+  const resendBtn = document.querySelector('[data-role="modal-resend-verification"]');
+
+  if (email_verified) {
+    resendBtn.disabled = true;
+    resendBtn.textContent = 'Correo verificado';
+  }
+
+  // 🔁 Reenviar verificación con cooldown
+  resendBtn?.addEventListener('click', async () => {
+    try {
+      resendBtn.disabled = true;
+      startCooldown(resendBtn, 60); // 60 segundos
+
+      const token = localStorage.getItem('token');
+      const response = await fetch('/auth/email/resend-verification', {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+
+      Swal.fire('Enviado', data.message || 'Correo reenviado con éxito', 'success');
+    } catch (err) {
+      Swal.fire('Error', err.message, 'error');
+      resendBtn.disabled = false;
+      resendBtn.textContent = 'Verificar correo';
+    }
+  });
 }
+
+// ⏱️ Cooldown para botón
+function startCooldown(button, seconds) {
+  let remaining = seconds;
+  const originalText = 'Verificar correo';
+
+  const interval = setInterval(() => {
+    button.textContent = `Reenviar en ${remaining--}s`;
+    if (remaining < 0) {
+      clearInterval(interval);
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }, 1000);
+}
+
