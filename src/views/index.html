@@ -8,20 +8,7 @@
     <link rel="alternate icon" href="https://cdn.emprenet.work/Favicons/NetFavicon.ico" />
 
     <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'media',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['Courier New', 'monospace'],
-            },
-          },
-        },
-      };
-    </script>
+    <link href="/css/build.css" rel="stylesheet" />
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -34,26 +21,27 @@
         
         <!-- LEFT: Login Form -->
         <div data-role="login-form-container" class="opacity-0 pointer-events-none transition-opacity duration-300 w-full max-w-sm border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5 self-center">
-          <h2 class="text-xl font-semibold mb-4 text-center">Iniciar sesión</h2>
-          <form data-role="login-form" class="flex flex-col gap-4">
-            <input
-              type="email"
-              placeholder="Correo electrónico"
-              class="px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-black dark:text-white"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              class="px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-black dark:text-white"
-              required
-            />
-            <button
-              type="submit"
-              class="bg-black text-white dark:bg-white dark:text-black rounded-md px-4 py-2 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
-            >
-              Entrar
-            </button>
+
+          <!-- Botones de alternancia -->
+          <div class="flex justify-between gap-4 mb-4 w-full">
+            <button data-role="switch-to-login" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-black text-white dark:bg-white dark:text-black">Iniciar sesión</button>
+            <button data-role="switch-to-register" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-gray-200 dark:bg-gray-700 dark:text-white">Registrarse</button>
+          </div>
+
+          <!-- Formularios: Login -->
+          <form data-role="login-form" class="form-tab flex flex-col gap-4">
+            <input type="email" placeholder="Correo electrónico" required class="input" />
+            <input type="password" placeholder="Contraseña" required class="input" />
+            <button type="submit" class="submit-button">Entrar</button>
+          </form>
+
+          <!-- Formularios: Registro -->
+          <form data-role="register-form" class="form-tab hidden flex-col gap-4">
+            <input type="text" placeholder="Nombre de usuario" required class="input" />
+            <input type="email" placeholder="Correo electrónico" required class="input" />
+            <input type="password" placeholder="Contraseña" required class="input" />
+            <input type="password" placeholder="Contraseña" required class="input" />
+            <button type="submit" class="submit-button">Registrarse</button>
           </form>
 
           <!-- Botón de login con Google -->

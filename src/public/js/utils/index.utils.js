@@ -83,6 +83,58 @@ export async function handleLogin(e, loginFormContainer, loginFormFields, onSucc
   }
 }
 
+export async function handleRegister(e, registerFormFields) {
+  e.preventDefault();
+
+  const [usernameInput, emailInput, passwordInput, confirmPasswordInput] = registerFormFields.querySelectorAll('input');
+
+  const username = usernameInput.value;
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const password_confirmation = confirmPasswordInput.value;
+
+  if (password !== password_confirmation) {
+    return Swal.fire({
+      icon: 'warning',
+      title: 'Contraseñas no coinciden',
+      text: 'Asegúrate de que ambas contraseñas sean iguales.'
+    });
+  }
+
+  try {
+    const response = await fetch('https://api.emprenet.work/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password, password_confirmation })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: data.message || 'Error en el registro.'
+      });
+    }
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Registro exitoso',
+      text: data.message || 'Verifica tu correo para activar la cuenta.'
+    });
+
+    registerFormFields.reset();
+  } catch (error) {
+    console.error('Register error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo conectar al servidor.'
+    });
+  }
+}
+
 export function closeSidebar(sidebar) {
   if (!sidebar || sidebar.classList.contains('translate-x-full')) return;
   sidebar.classList.add('translate-x-full');

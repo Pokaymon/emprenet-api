@@ -3,6 +3,15 @@ export async function showProfileModal(username, email, email_verified = false) 
   if (existing) existing.remove();
 
   const response = await fetch('/modals/profileModal.html');
+
+  if (response.ok) {
+    return console.log("click");
+  }
+
+  if (!response.ok) {
+    console.error("Error cargando el modal:", response.statusText);
+    return;
+  }
   const html = await response.text();
   document.body.insertAdjacentHTML('beforeend', html);
 

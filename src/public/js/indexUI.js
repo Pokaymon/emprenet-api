@@ -1,6 +1,7 @@
 import {
   updateAuthUI,
   handleLogin,
+  handleRegister,
   closeSidebar,
   getTokenFromURL
 } from './utils/index.utils.js';
@@ -39,10 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.loginFormContainer.classList.toggle('pointer-events-none');
   });
 
+  // Login
   elements.loginFormFields?.addEventListener('submit', (e) => {
     handleLogin(e, elements.loginFormContainer, elements.loginFormFields, () => {
       updateAuthUI(elements);
     });
+  });
+
+  // Register
+  const registerFormFields = document.querySelector('[data-role="register-form"]');
+  registerFormFields?.addEventListener('submit', (e) => {
+    handleRegister(e, registerFormFields);
   });
 
   elements.userImage?.addEventListener('click', () => {
@@ -70,6 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const email_verified = user.email_verified;
 
     showProfileModal(username, email, email_verified);
+  });
+
+  // Alternar entre formularios
+  const loginTab = document.querySelector('[data-role="switch-to-login"]');
+  const registerTab = document.querySelector('[data-role="switch-to-register"]');
+  const loginForm = document.querySelector('[data-role="login-form"]');
+  const registerForm = document.querySelector('[data-role="register-form"]');
+
+  // Alternar entre formularios
+  loginTab?.addEventListener('click', () => {
+    loginForm.classList.remove('hidden');
+    loginForm.classList.add('flex');
+    registerForm.classList.remove('flex');
+    registerForm.classList.add('hidden');
+
+    loginTab.classList.add('active');
+    loginTab.classList.remove('inactive');
+
+    registerTab.classList.add('inactive');
+    registerTab.classList.remove('active');
+  });
+
+  registerTab?.addEventListener('click', () => {
+    registerForm.classList.remove('hidden');
+    registerForm.classList.add('flex');
+    loginForm.classList.remove('flex');
+    loginForm.classList.add('hidden');
+
+    registerTab.classList.add('active');
+    registerTab.classList.remove('inactive');
+
+    loginTab.classList.add('inactive');
+    loginTab.classList.remove('active');
   });
 
 });
