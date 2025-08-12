@@ -1,15 +1,12 @@
-import { changeEmail, resendVerification } from '../hooks/profile.hook.js';
+import { useChangeEmail } from '../hooks/useChangeEmail.js';
+import { useResendVerification } from '../hooks/useResendVerification.js';
+import { startCooldown } from '../utils/cooldown.js';
 
 export async function showProfileModal(username, email, email_verified = false) {
   const existing = document.getElementById('profile-modal-overlay');
   if (existing) existing.remove();
 
   const response = await fetch('/modals/profileModal.html');
-  if (!response.ok) {
-    console.error("Error cargando el modal:", response.statusText);
-    return;
-  }
-
   const html = await response.text();
   document.body.insertAdjacentHTML('beforeend', html);
 
@@ -21,21 +18,18 @@ export async function showProfileModal(username, email, email_verified = false) 
   emailInput.value = email;
 
   requestAnimationFrame(() => {
-    modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
-    modalOverlay.classList.add('opacity-100');
-    modal.classList.remove('scale-95');
-    modal.classList.add('scale-100');
+    modalOverlay.classList.replace('opacity-0', 'opacity-100');
+    modal.classList.replace('scale-95', 'scale-100');
   });
 
   const close = () => {
-    modalOverlay.classList.add('opacity-0');
-    modal.classList.remove('scale-100');
-    modal.classList.add('scale-95');
+    modalOverlay.classList.replace('opacity-100', 'opacity-0');
+    modal.classList.replace('scale-100', 'scale-95');
     setTimeout(() => modalOverlay.remove(), 300);
   };
 
   document.querySelector('[data-role="modal-close"]').addEventListener('click', close);
-  modalOverlay.addEventListener('click', (e) => e.target === modalOverlay && close());
+  modalOverlay.addEventListener('click', e => e.target === modalOverlay && close());
 
   const editBtn = document.querySelector('[data-role="modal-edit-email"]');
   const saveBtn = document.querySelector('[data-role="modal-save-email"]');
@@ -49,9 +43,12 @@ export async function showProfileModal(username, email, email_verified = false) 
   });
 
   saveBtn.addEventListener('click', async () => {
-    if (emailInput.value.trim()) {
-      await changeEmail(emailInput.value.trim());
+    try {
+      const message = await useChangeEmail(emailInput.value.trim());
+      Swal.fire('Actualizado', message, 'success');
       close();
+    } catch (err) {
+      Swal.fire('Error', err.message, 'error');
     }
   });
 
@@ -60,6 +57,17 @@ export async function showProfileModal(username, email, email_verified = false) 
     resendBtn.disabled = true;
     resendBtn.textContent = 'Correo verificado';
   } else {
-    resendBtn.addEventListener('click', () => resendVerification(resendBtn));
+    resendBtn.addEventListener('click', async () => {
+      try {
+        resendBtn.disabled = true;
+        startCooldown(resendBtn, 60);
+        const message = await useResendVerification();
+        Swal.fire('Enviado', message, 'success');
+      } catch (err) {
+        Swal.fire('Error', err.message, 'error');
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Verificar correo';
+      }
+    });
   }
 }
