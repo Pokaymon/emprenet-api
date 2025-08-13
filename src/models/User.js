@@ -66,7 +66,30 @@ const User = {
     const query = `UPDATE users SET ${setClause} WHERE id = ?`;
 
     await this.query(query, [...values, id]);
+  },
+
+  // Funciones para busqueda por username
+
+  // Busqueda exacta por username (case-intensitive)
+  async findByUsernameExact(username) {
+    const result = await this.query(
+      'SELECT id, username, email_verified FROM users WHERE LOWER(username) = LOWER(?) LIMIT 1',
+      [username]
+    );
+    return result[0];
+  },
+
+  // Búsqueda parcial optimizada usando username_lower + índice
+  async searchByUsernamePartial(term, page = 1, limit = 10) {
+    const offset = (page - 1) * limit;
+    const likeTerm = `${term.toLowerCase()}%`; // pasamos a minúsculas antes de enviar a SQL
+    const result = await this.query(
+      'SELECT id, username, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
+      [likeTerm, Number(limit), Number(offset)]
+    );
+    return result;
   }
+
 };
 
 export default User;
