@@ -5,6 +5,7 @@ import { showProfileModal } from './utils/modal.utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const els = {
+    // loginForm
     loginFormContainer: document.querySelector('[data-role="login-form-container"]'),
     loginForm: document.querySelector('[data-role="login-form"]'),
     registerForm: document.querySelector('[data-role="register-form"]'),
@@ -14,7 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebar: document.querySelector('[data-role="sidebar"]'),
     profileLink: document.querySelector('[data-role="profile-link"]'),
     loginTab: document.querySelector('[data-role="switch-to-login"]'),
-    registerTab: document.querySelector('[data-role="switch-to-register"]')
+    registerTab: document.querySelector('[data-role="switch-to-register"]'),
+
+    // searchUsers
+    searchUsersContainer: document.querySelector('[data-role="search-users-container"]')
   };
 
   const tokenFromUrl = getTokenFromURL();
@@ -23,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
+  // Llamada inicial (isInit = true)
   updateAuthUI(els);
 
   // Mostrar login form

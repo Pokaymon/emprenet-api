@@ -18,13 +18,16 @@
     <div class="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen gap-16 pb-20">
       <!-- MAIN -->
       <main class="row-start-2 flex flex-col lg:flex-row gap-8 lg:gap-20 items-center justify-center px-4 lg:px-20 w-full max-w-7xl">
+
+        <!-- Contenedor relativo para superponer login/search -->
+        <div class="relative w-full max-w-sm min-h-[350px] self-center">
         
         <!-- LEFT: Login Form -->
         <div data-role="login-form-container" class="opacity-0 pointer-events-none transition-opacity duration-300 w-full max-w-sm border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5 self-center">
 
           <!-- Botones de alternancia -->
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <button data-role="switch-to-login" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-black text-white dark:bg-white dark:text-black">Iniciar sesión</button>
+            <button data-role="switch-to-login" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-black text-white dark:bg-white dark:text-black">Ingresar</button>
             <button data-role="switch-to-register" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-gray-200 dark:bg-gray-700 dark:text-white">Registrarse</button>
           </div>
 
@@ -58,7 +61,7 @@
         </div>
 
         <!-- SEARCH USERS -->
-        <div data-role="search-users-container" class="hidden w-full max-w-lg border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
+        <div data-role="search-users-container" class="hidden opacity-0 pointer-events-none transition-opacity duration-300 w-full max-w-sm border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
   
           <!-- Barra de búsqueda -->
           <div class="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 transition">
@@ -89,6 +92,8 @@
 
           </div>
         </div>
+
+	</div>
 
         <!-- CENTER: Actual contenido -->
         <div class="w-full max-w-sm flex flex-col gap-8 text-center lg:text-left">
