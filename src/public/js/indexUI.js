@@ -67,4 +67,5 @@ document.addEventListener('DOMContentLoaded', () => {
   els.registerTab?.addEventListener('click', () =>
     switchTabs(els.registerForm, els.loginForm, els.registerTab, els.loginTab)
   );
+
 });
