@@ -1,4 +1,5 @@
 import { parseJwt } from './token.utils.js';
+import { initUserSearch } from '../hooks/searchUsers.hook.js';
 
 export function toggleVisibility(el, show) {
   if (!el) return;
@@ -28,5 +29,10 @@ export function updateAuthUI({ loginFormContainer, loginButton, userImage, searc
     const user = parseJwt(token);
     document.querySelector('[data-role="sidebar-username"]').textContent = user?.username || 'Usuario';
     document.querySelector('[data-role="sidebar-email"]').textContent = user?.email || 'example@ejemplo.com';
+
+    // Inicializar barra de búsqueda
+    const searchInput = document.querySelector('[data-role="search-input"]');
+    const searchResults = document.querySelector('[data-role="search-results"]');
+    initUserSearch(searchInput, searchResults);
   }
 }

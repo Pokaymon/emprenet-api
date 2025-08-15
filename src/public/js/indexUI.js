@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     registerTab: document.querySelector('[data-role="switch-to-register"]'),
 
     // searchUsers
-    searchUsersContainer: document.querySelector('[data-role="search-users-container"]')
+    searchUsersContainer: document.querySelector('[data-role="search-users-container"]'),
   };
 
   const tokenFromUrl = getTokenFromURL();
