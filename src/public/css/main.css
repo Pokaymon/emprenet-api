@@ -1,31 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@reference utilities;
 
 /* Estilos de formularios (Login | Register) */
 @layer components {
   .input {
-    @apply px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-black dark:text-white;
+    @apply rounded border bg-white dark:bg-black dark:text-white;
+    @apply px-4 py-2 border-gray-300 dark:border-gray-700;
   }
+
   .submit-button {
-    @apply bg-black text-white dark:bg-white dark:text-black rounded-md px-4 py-2 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors;
+    @apply rounded-md transition-colors;
+    @apply bg-black text-white dark:bg-white dark:text-black;
+    @apply px-4 py-2 hover:bg-gray-800 dark:hover:bg-gray-200;
   }
+
   .tab-button {
-    @apply px-4 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out;
+    @apply rounded-md font-semibold transition-all duration-300 ease-in-out;
+    @apply px-4 py-2;
   }
+
   .tab-button.active {
     @apply bg-black text-white dark:bg-white dark:text-black;
   }
+
   .tab-button.inactive {
     @apply bg-gray-200 text-black dark:bg-gray-700 dark:text-white;
   }
+
   .tab-button:hover {
     @apply scale-105;
   }
+
   .form-tab-enter {
     @apply opacity-0 translate-x-4;
   }
+
   .form-tab-enter-active {
     @apply transition-all duration-300 opacity-100 translate-x-0;
   }
 }
+
