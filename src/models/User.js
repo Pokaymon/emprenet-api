@@ -27,8 +27,8 @@ const User = {
     last_verification_email_sent_at = null
   }) {
     await this.query(
-      'INSERT INTO users (username, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [username, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
+      'INSERT INTO users (username, username_lower, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [username, username.toLowerCase(), email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
     );
   },
 
@@ -79,14 +79,26 @@ const User = {
     return result[0];
   },
 
-  // Búsqueda parcial optimizada usando username_lower + índice
   async searchByUsernamePartial(term, page = 1, limit = 10) {
     const offset = (page - 1) * limit;
-    const likeTerm = `${term.toLowerCase()}%`; // pasamos a minúsculas antes de enviar a SQL
-    const result = await this.query(
+    const lowerTerm = term.toLowerCase();
+
+    // 🔹 1. Primer intento (rápido, usa índice)
+    let likeTerm = `${lowerTerm}%`;
+    let result = await this.query(
       'SELECT id, username, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
       [likeTerm, Number(limit), Number(offset)]
     );
+
+    // 🔹 2. Si no hay resultados, intentar búsqueda más amplia
+    if (result.length === 0) {
+      likeTerm = `%${lowerTerm}%`;
+      result = await this.query(
+        'SELECT id, username, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
+        [likeTerm, Number(limit), Number(offset)]
+      );
+    }
+
     return result;
   }
 
