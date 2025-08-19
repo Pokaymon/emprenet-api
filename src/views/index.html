@@ -152,6 +152,87 @@
         </div>
       </main>
 
+      <!-- USER PROFILE (Fixed, ocupa LEFT + CENTER) -->
+      <section 
+        data-role="user-profile" 
+        class="fixed inset-0 flex justify-center items-start pt-24 transition-opacity duration-500 z-50"
+      >
+        <div class="w-full max-w-3xl max-h-[85vh] overflow-y-auto mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-colors duration-300">
+          <!-- Header del perfil -->
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <!-- Avatar -->
+            <div class="relative w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow">
+              <img 
+                src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" 
+                alt="Avatar usuario" 
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Info del usuario -->
+            <div class="flex flex-col flex-1">
+              <!-- Nombre y acciones -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Nombre de Usuario</h2>
+                <button 
+                  class="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+                >
+                  Seguir
+                </button>
+              </div>
+
+              <!-- Stats -->
+              <div class="flex gap-6 text-gray-700 dark:text-gray-300 mb-3">
+                <span><strong class="text-black dark:text-white">120</strong> publicaciones</span>
+                <span><strong class="text-black dark:text-white">340</strong> seguidores</span>
+                <span><strong class="text-black dark:text-white">180</strong> seguidos</span>
+              </div>
+
+              <!-- Bio -->
+              <p class="text-gray-600 dark:text-gray-400 text-sm max-w-md">
+                ✨ Desarrollador junior | Apasionado por la tecnología 🚀 | Compartiendo proyectos en EmpreNet.
+              </p>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <hr class="my-6 border-gray-200 dark:border-gray-700" />
+
+          <!-- Publicaciones -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Publicaciones</h3>
+
+            <!-- Grid de posts -->
+            <div class="grid grid-cols-3 gap-2">
+              <!-- Post -->
+              <div class="aspect-square bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition">
+                <img 
+                  src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" 
+                  alt="Post ejemplo" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div class="aspect-square bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition">
+                <img 
+                  src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" 
+                  alt="Post ejemplo" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div class="aspect-square bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition">
+                <img 
+                  src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" 
+                  alt="Post ejemplo" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Sidebar -->
       <aside data-role="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-gray-900 shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
         <!-- Contenido superior -->
