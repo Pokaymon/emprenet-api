@@ -63,3 +63,43 @@ export async function showConfigProfileModal(username, email, email_verified = f
     resendBtn.addEventListener('click', () => resendVerification(resendBtn));
   }
 }
+
+export async function showUserProfileModal({ username }) {
+  const existing = document.getElementById("profile-modal-overlay");
+  if (existing) existing.remove();
+
+  const response = await fetch("/modals/userProfileModal.html");
+  if (!response.ok) {
+    console.error("Error cargando el modal:", response.statusText);
+    return;
+  }
+
+  const html = await response.text();
+  document.body.insertAdjacentHTML("beforeend", html);
+
+  const modalOverlay = document.getElementById("profile-modal-overlay");
+  const modal = document.getElementById("profile-modal");
+
+  // Por ahora contenido estático
+  document.querySelector("[data-role='modal-username']").textContent = `@${username}`;
+  document.querySelector("[data-role='modal-bio']").textContent = "Este es un perfil de prueba. Aquí va la bio del usuario...";
+
+  // Animación de entrada
+  requestAnimationFrame(() => {
+    modalOverlay.classList.remove("opacity-0", "pointer-events-none");
+    modalOverlay.classList.add("opacity-100");
+    modal.classList.remove("scale-95");
+    modal.classList.add("scale-100");
+  });
+
+  // Cerrar modal
+  const close = () => {
+    modalOverlay.classList.add("opacity-0");
+    modal.classList.remove("scale-100");
+    modal.classList.add("scale-95");
+    setTimeout(() => modalOverlay.remove(), 300);
+  };
+
+  document.querySelector("[data-role='modal-close']").addEventListener("click", close);
+  modalOverlay.addEventListener("click", (e) => e.target === modalOverlay && close());
+}

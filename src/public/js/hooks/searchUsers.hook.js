@@ -1,4 +1,5 @@
 import { alertError } from '../utils/alert.utils.js';
+import { showUserProfileModal } from '../utils/modal.utils.js';
 
 let debounceTimer;
 
@@ -70,8 +71,7 @@ async function searchUsers(query, resultsContainer) {
     resultsContainer.querySelectorAll("[data-username]").forEach(el => {
       el.addEventListener("click", () => {
         const username = el.getAttribute("data-username");
-        // Aquí podrías hacer otra request para obtener info detallada del usuario
-        showProfileModal({ username }); 
+        showUserProfileModal({ username });
       });
     });
 
