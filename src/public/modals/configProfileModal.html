@@ -1,13 +1,13 @@
-<div id="profile-modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div id="profile-modal" class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-xl transform transition-all duration-300 scale-95">
+<div id="config-profile-modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div id="config-profile-modal" class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-xl transform transition-all duration-300 scale-95">
     <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Perfil de usuario</h2>
 
     <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Nombre de usuario:</p>
-    <p data-role="modal-username" class="mb-4 text-gray-800 dark:text-gray-200 font-medium">Cargando...</p>
+    <p data-role="config-modal-username" class="mb-4 text-gray-800 dark:text-gray-200 font-medium">Cargando...</p>
 
     <label class="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Email:</label>
     <input
-      data-role="modal-email"
+      data-role="config-modal-email"
       type="email"
       class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white transition"
       disabled
@@ -43,7 +43,7 @@
 
     <!-- Cerrar -->
     <button
-      data-role="modal-close"
+      data-role="config-modal-close"
       class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-900 font-bold py-2 rounded"
     >
       Cerrar

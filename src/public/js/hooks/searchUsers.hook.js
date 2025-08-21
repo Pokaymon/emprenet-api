@@ -57,14 +57,23 @@ async function searchUsers(query, resultsContainer) {
     }
 
     resultsContainer.innerHTML = results.map(user => `
-      <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
-        <img src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" class="w-10 h-10 rounded-full object-cover" alt="Avatar">
+      <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" data-username="${user.username}">
+        <img src="${user.avatar || 'https://cdn.emprenet.work/Icons/default-avatar-2.webp'}" class="w-10 h-10 rounded-full object-cover" alt="Avatar">
         <div>
           <p class="font-semibold text-gray-900 dark:text-white">@${user.username}</p>
           <p class="text-sm text-gray-500">${user.email_verified ? '✔ Verificado' : 'No verificado'}</p>
         </div>
       </div>
     `).join('');
+
+    // Agregar listeners para abrir modal
+    resultsContainer.querySelectorAll("[data-username]").forEach(el => {
+      el.addEventListener("click", () => {
+        const username = el.getAttribute("data-username");
+        // Aquí podrías hacer otra request para obtener info detallada del usuario
+        showProfileModal({ username }); 
+      });
+    });
 
   } catch (err) {
     console.error('Error al buscar usuarios:', err);

@@ -1,7 +1,7 @@
 import { handleLogin, handleRegister, logout } from './hooks/auth.hook.js';
 import { updateAuthUI, switchTabs } from './utils/ui.utils.js';
 import { getTokenFromURL } from './utils/token.utils.js';
-import { showProfileModal } from './utils/modal.utils.js';
+import { showConfigProfileModal } from './utils/modal.utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const els = {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
-  // Llamada inicial (isInit = true)
+  // Llamada inicial
   updateAuthUI(els);
 
   // Mostrar login form
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) return;
     const user = JSON.parse(atob(token.split('.')[1]));
-    showProfileModal(user.username, user.email, user.email_verified);
+    showConfigProfileModal(user.username, user.email, user.email_verified);
   });
 
   els.loginTab?.addEventListener('click', () =>

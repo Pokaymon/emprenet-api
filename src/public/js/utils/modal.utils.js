@@ -1,10 +1,10 @@
 import { changeEmail, resendVerification } from '../hooks/profile.hook.js';
 
-export async function showProfileModal(username, email, email_verified = false) {
-  const existing = document.getElementById('profile-modal-overlay');
+export async function showConfigProfileModal(username, email, email_verified = false) {
+  const existing = document.getElementById('config-profile-modal-overlay');
   if (existing) existing.remove();
 
-  const response = await fetch('/modals/profileModal.html');
+  const response = await fetch('/modals/configProfileModal.html');
   if (!response.ok) {
     console.error("Error cargando el modal:", response.statusText);
     return;
@@ -13,11 +13,11 @@ export async function showProfileModal(username, email, email_verified = false) 
   const html = await response.text();
   document.body.insertAdjacentHTML('beforeend', html);
 
-  const modalOverlay = document.getElementById('profile-modal-overlay');
-  const modal = document.getElementById('profile-modal');
+  const modalOverlay = document.getElementById('config-profile-modal-overlay');
+  const modal = document.getElementById('config-profile-modal');
 
-  document.querySelector('[data-role="modal-username"]').textContent = username;
-  const emailInput = document.querySelector('[data-role="modal-email"]');
+  document.querySelector('[data-role="config-modal-username"]').textContent = username;
+  const emailInput = document.querySelector('[data-role="config-modal-email"]');
   emailInput.value = email;
 
   requestAnimationFrame(() => {
@@ -34,7 +34,7 @@ export async function showProfileModal(username, email, email_verified = false) 
     setTimeout(() => modalOverlay.remove(), 300);
   };
 
-  document.querySelector('[data-role="modal-close"]').addEventListener('click', close);
+  document.querySelector('[data-role="config-modal-close"]').addEventListener('click', close);
   modalOverlay.addEventListener('click', (e) => e.target === modalOverlay && close());
 
   const editBtn = document.querySelector('[data-role="modal-edit-email"]');

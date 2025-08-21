@@ -10,10 +10,9 @@ export function toggleVisibility(el, show) {
 export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
   showForm.classList.replace('hidden', 'flex');
   hideForm.classList.replace('flex', 'hidden');
-  activeBtn.classList.add('active');
-  activeBtn.classList.remove('inactive');
-  inactiveBtn.classList.add('inactive');
-  inactiveBtn.classList.remove('active');
+
+  activeBtn.setAttribute('data-state', 'active');
+  inactiveBtn.setAttribute('data-state', 'inactive');
 }
 
 export function updateAuthUI({ loginFormContainer, loginButton, userImage, searchUsersContainer }) {

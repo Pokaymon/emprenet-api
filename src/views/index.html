@@ -65,8 +65,8 @@
 
           <!-- Botones de alternancia -->
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <button data-role="switch-to-login" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-black text-white dark:bg-white dark:text-black">Ingresar</button>
-            <button data-role="switch-to-register" class="tab-button px-4 py-2 rounded-md font-semibold transition-colors bg-gray-200 dark:bg-gray-700 dark:text-white">Registrarse</button>
+            <button data-role="switch-to-login" data-state="active" class="tab-button">Ingresar</button>
+            <button data-role="switch-to-register" data-state="inactive" class="tab-button">Registrarse</button>
           </div>
 
           <!-- Formularios: Login -->
@@ -183,7 +183,7 @@
         <div class="mt-auto w-full">
           <button
             data-role="logout-button"
-            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded transition duration-300"
+            class="w-full cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded transition duration-300"
           >
             Cerrar sesión
           </button>

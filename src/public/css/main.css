@@ -10,6 +10,7 @@
 
   .submit-button {
     @apply rounded-md transition-colors;
+    @apply cursor-pointer;
     @apply bg-black text-white dark:bg-white dark:text-black;
     @apply px-4 py-2 hover:bg-gray-800 dark:hover:bg-gray-200;
   }
@@ -17,13 +18,14 @@
   .tab-button {
     @apply rounded-md font-semibold transition-all duration-300 ease-in-out;
     @apply px-4 py-2;
+    @apply cursor-pointer;
   }
 
-  .tab-button.active {
+  .tab-button[data-state="active"] {
     @apply bg-black text-white dark:bg-white dark:text-black;
   }
 
-  .tab-button.inactive {
+  .tab-button[data-state="inactive"] {
     @apply bg-gray-200 text-black dark:bg-gray-700 dark:text-white;
   }
 
