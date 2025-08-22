@@ -103,3 +103,42 @@ export async function showUserProfileModal({ username }) {
   document.querySelector("[data-role='modal-close']").addEventListener("click", close);
   modalOverlay.addEventListener("click", (e) => e.target === modalOverlay && close());
 }
+
+export async function showChangeAvatarModal(currentAvatarUrl) {
+  const existing = document.getElementById("change-avatar-overlay");
+  if (existing) existing.remove();
+
+  const response = await fetch("/modals/changeAvatarModal.html");
+  if (!response.ok) {
+    console.error("Error cargando el modal:", response.statusText);
+    return;
+  }
+
+  const html = await response.text();
+  document.body.insertAdjacentHTML("beforeend", html);
+
+  const overlay = document.getElementById("change-avatar-overlay");
+  const modal = document.getElementById("change-avatar-modal");
+
+  // Set avatar actual
+  document.querySelector("[data-role='current-avatar']").src = currentAvatarUrl;
+
+  // Animación entrada
+  requestAnimationFrame(() => {
+    overlay.classList.remove("opacity-0", "pointer-events-none");
+    overlay.classList.add("opacity-100");
+    modal.classList.remove("scale-95");
+    modal.classList.add("scale-100");
+  });
+
+  // Cerrar
+  const close = () => {
+    overlay.classList.add("opacity-0");
+    modal.classList.remove("scale-100");
+    modal.classList.add("scale-95");
+    setTimeout(() => overlay.remove(), 300);
+  };
+
+  document.querySelector("[data-role='modal-close']").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => e.target === overlay && close());
+}

@@ -23,12 +23,13 @@ const User = {
     auth_provider = 'local',
     verification_token = null,
     email_verified = false,
+    avatar = 'https://cdn.emprenet.work/Icons/default-avatar-2.webp',
     verification_token_expires_at = null,
     last_verification_email_sent_at = null
   }) {
     await this.query(
-      'INSERT INTO users (username, username_lower, email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [username, username.toLowerCase(), email, password, auth_provider, verification_token, email_verified, verification_token_expires_at, last_verification_email_sent_at]
+      'INSERT INTO users (username, username_lower, email, password, auth_provider, verification_token, email_verified, avatar, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [username, username.toLowerCase(), email, password, auth_provider, verification_token, email_verified, avatar, verification_token_expires_at, last_verification_email_sent_at]
     );
   },
 

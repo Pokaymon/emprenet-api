@@ -2,6 +2,7 @@ import { handleLogin, handleRegister, logout } from './hooks/auth.hook.js';
 import { updateAuthUI, switchTabs } from './utils/ui.utils.js';
 import { getTokenFromURL } from './utils/token.utils.js';
 import { showConfigProfileModal } from './utils/modal.utils.js';
+import { showChangeAvatarModal } from './utils/modal.utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const els = {
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // searchUsers
     searchUsersContainer: document.querySelector('[data-role="search-users-container"]'),
+
+    // changeAvatar
+    changeAvatarBtn: document.querySelector('[data-role="change-avatar-btn"]'),
+    sidebarAvatar: document.querySelector('[data-role="sidebar-avatar"]'),
   };
 
   const tokenFromUrl = getTokenFromURL();
@@ -59,6 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) return;
     const user = JSON.parse(atob(token.split('.')[1]));
     showConfigProfileModal(user.username, user.email, user.email_verified);
+  });
+
+  // Modal Change Avatar
+  els.sidebarAvatar?.addEventListener('click', () => {
+    const currentAvatar = els.sidebarAvatar?.src || "https://cdn.emprenet.work/Icons/default-avatar-2.webp";
+    showChangeAvatarModal(currentAvatar);
   });
 
   els.loginTab?.addEventListener('click', () =>

@@ -1,0 +1,28 @@
+<div id="change-avatar-overlay" class="fixed inset-0 bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center z-50">
+  <div id="change-avatar-modal" class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-[800px] w-full p-6 transform scale-95 transition-transform duration-300">
+    <!-- Header -->
+    <div class="flex justify-end items-center mb-4">
+      <button data-role="modal-close" class="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-xl leading-none">&times;</button>
+    </div>
+
+    <!-- Contenido -->
+    <div class="flex flex-col items-center space-y-4">
+      <img
+        data-role="current-avatar"
+        src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        alt="Avatar actual"
+        class="w-64 h-64 rounded-full object-cover border-4 border-blue-500"
+      />
+
+      <!-- Upload Avatar -->
+      <label
+	for="avatar-upload"
+	class="flex items-center gap-2 px-4 py-2 bg-blue-200 hover:bg-blue-600 text-white text-sm font-medium rounded-lg cursor-pointer transitions-colors duration-500 dark:bg-blue-600 dark:hover:bg-blue-700"
+      >
+	<img src="https://cdn.emprenet.work/Icons/webp/edit_icon.webp" alt="Editar" class="w-5 h-5" />
+	Cambiar
+      </label>
+      <input type="file" id="avatar-upload" accept="image/*" class="hidden" />
+    </div>
+  </div>
+</div>
