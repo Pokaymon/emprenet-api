@@ -1,144 +1,143 @@
 import { changeEmail, resendVerification } from '../hooks/profile.hook.js';
+import { changeAvatar } from '../hooks/avatar.hook.js';
+import { showAlert } from './alert.utils.js';
 
-export async function showConfigProfileModal(username, email, email_verified = false) {
-  const existing = document.getElementById('config-profile-modal-overlay');
+/**
+ * Carga y muestra un modal genérico
+ * @param {string} url - Ruta al archivo HTML del modal
+ * @param {string} overlayId - ID del overlay del modal
+ * @param {string} modalId - ID del contenedor del modal
+ * @param {Function} onInit - Callback para inicializar contenido y eventos
+ */
+
+async function loadAndShowModal({ url, overlayId, modalId, onInit }) {
+  const existing = document.getElementById(overlayId);
   if (existing) existing.remove();
 
-  const response = await fetch('/modals/configProfileModal.html');
+  const response = await fetch(url);
   if (!response.ok) {
-    console.error("Error cargando el modal:", response.statusText);
+    console.error('Error cargando el modal:', response.statusText);
     return;
   }
 
   const html = await response.text();
   document.body.insertAdjacentHTML('beforeend', html);
 
-  const modalOverlay = document.getElementById('config-profile-modal-overlay');
-  const modal = document.getElementById('config-profile-modal');
+  const overlay = document.getElementById(overlayId);
+  const modal = document.getElementById(modalId);
 
-  document.querySelector('[data-role="config-modal-username"]').textContent = username;
-  const emailInput = document.querySelector('[data-role="config-modal-email"]');
-  emailInput.value = email;
-
+  // Animación de entrada
   requestAnimationFrame(() => {
-    modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
-    modalOverlay.classList.add('opacity-100');
+    overlay.classList.remove('opacity-0', 'pointer-events-none');
+    overlay.classList.add('opacity-100');
     modal.classList.remove('scale-95');
     modal.classList.add('scale-100');
   });
 
+  // Función cerrar
   const close = () => {
-    modalOverlay.classList.add('opacity-0');
+    overlay.classList.add('opacity-0');
     modal.classList.remove('scale-100');
     modal.classList.add('scale-95');
-    setTimeout(() => modalOverlay.remove(), 300);
-  };
-
-  document.querySelector('[data-role="config-modal-close"]').addEventListener('click', close);
-  modalOverlay.addEventListener('click', (e) => e.target === modalOverlay && close());
-
-  const editBtn = document.querySelector('[data-role="modal-edit-email"]');
-  const saveBtn = document.querySelector('[data-role="modal-save-email"]');
-  let editable = false;
-
-  editBtn.addEventListener('click', () => {
-    editable = true;
-    emailInput.disabled = false;
-    emailInput.focus();
-    saveBtn.classList.remove('hidden');
-  });
-
-  saveBtn.addEventListener('click', async () => {
-    if (emailInput.value.trim()) {
-      await changeEmail(emailInput.value.trim());
-      close();
-    }
-  });
-
-  const resendBtn = document.querySelector('[data-role="modal-resend-verification"]');
-  if (email_verified) {
-    resendBtn.disabled = true;
-    resendBtn.textContent = 'Correo verificado';
-  } else {
-    resendBtn.addEventListener('click', () => resendVerification(resendBtn));
-  }
-}
-
-export async function showUserProfileModal({ username }) {
-  const existing = document.getElementById("profile-modal-overlay");
-  if (existing) existing.remove();
-
-  const response = await fetch("/modals/userProfileModal.html");
-  if (!response.ok) {
-    console.error("Error cargando el modal:", response.statusText);
-    return;
-  }
-
-  const html = await response.text();
-  document.body.insertAdjacentHTML("beforeend", html);
-
-  const modalOverlay = document.getElementById("profile-modal-overlay");
-  const modal = document.getElementById("profile-modal");
-
-  // Por ahora contenido estático
-  document.querySelector("[data-role='modal-username']").textContent = `@${username}`;
-  document.querySelector("[data-role='modal-bio']").textContent = "Este es un perfil de prueba. Aquí va la bio del usuario...";
-
-  // Animación de entrada
-  requestAnimationFrame(() => {
-    modalOverlay.classList.remove("opacity-0", "pointer-events-none");
-    modalOverlay.classList.add("opacity-100");
-    modal.classList.remove("scale-95");
-    modal.classList.add("scale-100");
-  });
-
-  // Cerrar modal
-  const close = () => {
-    modalOverlay.classList.add("opacity-0");
-    modal.classList.remove("scale-100");
-    modal.classList.add("scale-95");
-    setTimeout(() => modalOverlay.remove(), 300);
-  };
-
-  document.querySelector("[data-role='modal-close']").addEventListener("click", close);
-  modalOverlay.addEventListener("click", (e) => e.target === modalOverlay && close());
-}
-
-export async function showChangeAvatarModal(currentAvatarUrl) {
-  const existing = document.getElementById("change-avatar-overlay");
-  if (existing) existing.remove();
-
-  const response = await fetch("/modals/changeAvatarModal.html");
-  if (!response.ok) {
-    console.error("Error cargando el modal:", response.statusText);
-    return;
-  }
-
-  const html = await response.text();
-  document.body.insertAdjacentHTML("beforeend", html);
-
-  const overlay = document.getElementById("change-avatar-overlay");
-  const modal = document.getElementById("change-avatar-modal");
-
-  // Set avatar actual
-  document.querySelector("[data-role='current-avatar']").src = currentAvatarUrl;
-
-  // Animación entrada
-  requestAnimationFrame(() => {
-    overlay.classList.remove("opacity-0", "pointer-events-none");
-    overlay.classList.add("opacity-100");
-    modal.classList.remove("scale-95");
-    modal.classList.add("scale-100");
-  });
-
-  // Cerrar
-  const close = () => {
-    overlay.classList.add("opacity-0");
-    modal.classList.remove("scale-100");
-    modal.classList.add("scale-95");
     setTimeout(() => overlay.remove(), 300);
   };
 
-  document.querySelector("[data-role='modal-close']").addEventListener("click", close);
-  overlay.addEventListener("click", (e) => e.target === overlay && close());
+  // Eventos de cierre genéricos
+  const closeBtn = overlay.querySelector('[data-role="modal-close"]');
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => e.target === overlay && close());
+
+  // Ejecutar lógica específica del modal
+  if (typeof onInit === 'function') {
+    onInit({ overlay, modal, close });
+  }
+}
+
+// === Modales específicos === //
+
+export function showConfigProfileModal(username, email, email_verified = false) {
+  return loadAndShowModal({
+    url: '/modals/configProfileModal.html',
+    overlayId: 'config-profile-modal-overlay',
+    modalId: 'config-profile-modal',
+    onInit: ({ close }) => {
+      document.querySelector('[data-role="config-modal-username"]').textContent = username;
+      const emailInput = document.querySelector('[data-role="config-modal-email"]');
+      emailInput.value = email;
+
+      const editBtn = document.querySelector('[data-role="modal-edit-email"]');
+      const saveBtn = document.querySelector('[data-role="modal-save-email"]');
+      let editable = false;
+
+      editBtn.addEventListener('click', () => {
+        editable = true;
+        emailInput.disabled = false;
+        emailInput.focus();
+        saveBtn.classList.remove('hidden');
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        if (emailInput.value.trim()) {
+          await changeEmail(emailInput.value.trim());
+          close();
+        }
+      });
+
+      const resendBtn = document.querySelector('[data-role="modal-resend-verification"]');
+      if (email_verified) {
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Correo verificado';
+      } else {
+        resendBtn.addEventListener('click', () => resendVerification(resendBtn));
+      }
+    }
+  });
+}
+
+export function showUserProfileModal({ username }) {
+  return loadAndShowModal({
+    url: '/modals/userProfileModal.html',
+    overlayId: 'profile-modal-overlay',
+    modalId: 'profile-modal',
+    onInit: () => {
+      document.querySelector('[data-role="modal-username"]').textContent = `@${username}`;
+      document.querySelector('[data-role="modal-bio"]').textContent =
+        'Este es un perfil de prueba. Aquí va la bio del usuario...';
+    }
+  });
+}
+
+export function showChangeAvatarModal(currentAvatarUrl) {
+  return loadAndShowModal({
+    url: '/modals/changeAvatarModal.html',
+    overlayId: 'change-avatar-overlay',
+    modalId: 'change-avatar-modal',
+    onInit: () => {
+      const avatarImg = document.querySelector('[data-role="current-avatar"]');
+      avatarImg.src = currentAvatarUrl;
+
+      const fileInput = document.getElementById('avatar-upload');
+      fileInput.addEventListener('change', async(e) => {
+        const file = e.target.files[0];
+	if (!file) return;
+
+	try {
+	  const { avatar } = await changeAvatar(file);
+
+	  // Actualiza la vista dentro del modal
+	  avatarImg.src = avatar;
+
+	  // También actualiza el sidebar
+	  const sidebarAvatar = document.querySelector('[data-role="sidebar-avatar"]');
+	  if (sidebarAvatar) sidebarAvatar.src = avatar;
+
+	  showAlert('success', 'Avatar actualizado correctamente');
+	  setTimeout(() => close(), 800);
+	} catch (err) {
+	  console.error(err);
+	  showAlert('error', err.message);
+	}
+      });
+    },
+  });
 }
