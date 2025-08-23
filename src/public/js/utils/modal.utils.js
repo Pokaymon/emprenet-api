@@ -1,6 +1,7 @@
 import { changeEmail, resendVerification } from '../hooks/profile.hook.js';
 import { changeAvatar } from '../hooks/avatar.hook.js';
 import { showAlert } from './alert.utils.js';
+import { updateAuthUI } from './ui.utils.js';
 
 /**
  * Carga y muestra un modal genérico
@@ -107,7 +108,7 @@ export function showUserProfileModal({ username }) {
   });
 }
 
-export function showChangeAvatarModal(currentAvatarUrl) {
+export function showChangeAvatarModal(currentAvatarUrl, els) {
   return loadAndShowModal({
     url: '/modals/changeAvatarModal.html',
     overlayId: 'change-avatar-overlay',
@@ -126,6 +127,9 @@ export function showChangeAvatarModal(currentAvatarUrl) {
 
 	  // Actualiza la vista dentro del modal
 	  avatarImg.src = avatar;
+
+	  // Refresca toda la UI
+	  updateAuthUI(els);
 
 	  // También actualiza el sidebar
 	  const sidebarAvatar = document.querySelector('[data-role="sidebar-avatar"]');

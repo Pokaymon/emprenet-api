@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modal Change Avatar
   els.sidebarAvatar?.addEventListener('click', () => {
     const currentAvatar = els.sidebarAvatar?.src || "https://cdn.emprenet.work/Icons/default-avatar-2.webp";
-    showChangeAvatarModal(currentAvatar);
+    showChangeAvatarModal(currentAvatar, els);
   });
 
   els.loginTab?.addEventListener('click', () =>
