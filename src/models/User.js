@@ -74,7 +74,7 @@ const User = {
   // Busqueda exacta por username (case-intensitive)
   async findByUsernameExact(username) {
     const result = await this.query(
-      'SELECT id, username, email_verified FROM users WHERE LOWER(username) = LOWER(?) LIMIT 1',
+      'SELECT id, username, avatar, email_verified FROM users WHERE LOWER(username) = LOWER(?) LIMIT 1',
       [username]
     );
     return result[0];
@@ -87,7 +87,7 @@ const User = {
     // 🔹 1. Primer intento (rápido, usa índice)
     let likeTerm = `${lowerTerm}%`;
     let result = await this.query(
-      'SELECT id, username, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
+      'SELECT id, username, avatar, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
       [likeTerm, Number(limit), Number(offset)]
     );
 
@@ -95,7 +95,7 @@ const User = {
     if (result.length === 0) {
       likeTerm = `%${lowerTerm}%`;
       result = await this.query(
-        'SELECT id, username, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
+        'SELECT id, username, avatar, email_verified FROM users WHERE username_lower LIKE ? ORDER BY username ASC LIMIT ? OFFSET ?',
         [likeTerm, Number(limit), Number(offset)]
       );
     }

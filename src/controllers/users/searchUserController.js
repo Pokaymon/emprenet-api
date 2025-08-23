@@ -36,6 +36,7 @@ export async function searchUser(req, res) {
       return res.json({
         id: user.id,
         username: user.username,
+        avatar: user.avatar,
         email_verified: Boolean(user.email_verified)
       });
     }
@@ -55,6 +56,7 @@ export async function searchUser(req, res) {
       const mapped = results.map(u => ({
         id: u.id,
         username: u.username,
+        avatar: u.avatar,
         email_verified: Boolean(u.email_verified)
       }));
 

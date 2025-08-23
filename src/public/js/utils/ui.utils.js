@@ -15,7 +15,13 @@ export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
   inactiveBtn.setAttribute('data-state', 'inactive');
 }
 
-export function updateAuthUI({ loginFormContainer, loginButton, userImage, searchUsersContainer }) {
+export function updateAuthUI({
+  loginFormContainer,
+  loginButton,
+  userImage,
+  searchUsersContainer,
+  sidebarAvatar,
+}) {
   const token = localStorage.getItem('token');
   const isAuthenticated = Boolean(token);
 
@@ -28,6 +34,16 @@ export function updateAuthUI({ loginFormContainer, loginButton, userImage, searc
     const user = parseJwt(token);
     document.querySelector('[data-role="sidebar-username"]').textContent = user?.username || 'Usuario';
     document.querySelector('[data-role="sidebar-email"]').textContent = user?.email || 'example@ejemplo.com';
+
+    // Actualizar avatar
+    const avatarUrl = user?.avatar || 'https://cdn.emprenet.work/Icons/default-avatar-2.webp';
+
+    // Imagen circular en el index
+    const userImageEl = userImage.querySelector('img');
+    if (userImageEl) userImageEl.src = avatarUrl;
+
+    // Avatar en sidebar
+    if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
 
     // Inicializar barra de búsqueda
     const searchInput = document.querySelector('[data-role="search-input"]');
