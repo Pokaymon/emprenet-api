@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+
+// Models
 import User from '../../models/User.js';
+import UserProfile from '../../models/UserProfile.js';
+
 import { sendVerificationEmail } from '../../services/emailService.js';
 import { validateRequiredFields, passwordsMatch } from '../../utils/validation.js';
 
@@ -30,7 +34,7 @@ export const registerUser = async (req, res) => {
     const now = new Date();
     const tokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 Hora
 
-    await User.create({
+    const newUserId = await User.create({
       username,
       email,
       password: hashedPassword,
@@ -40,6 +44,10 @@ export const registerUser = async (req, res) => {
       last_verification_email_sent_at: now
     });
 
+    // Crear perfil
+    await UserProfile.create(newUserId);
+
+    // Verificación de email
     await sendVerificationEmail(email, verification_token);
 
     return res.status(201).json({ message: 'Usuario registrado, Verifica tu correo.' });

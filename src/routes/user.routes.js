@@ -1,6 +1,7 @@
 import express from 'express';
 import { searchUser } from '../controllers/users/searchUserController.js';
 import { changeAvatar } from '../controllers/users/changeAvatarController.js';
+import { toggleFollow } from '../controllers/users/followController.js';
 
 // Middlewares
 import rateLimiter from '../middlewares/rateLimiter.js';
@@ -19,5 +20,8 @@ router.post(
   upload.single('avatar'),
   changeAvatar
 );
+
+// POST /users/follow
+router.post('/follow', authMiddleware, toggleFollow);
 
 export default router;

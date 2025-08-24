@@ -123,7 +123,12 @@ export function showChangeAvatarModal(currentAvatarUrl, els) {
 	if (!file) return;
 
 	try {
-	  const { avatar } = await changeAvatar(file);
+	  const { avatar, token } = await changeAvatar(file);
+
+	  // Guardar nuevo token con avatar actualizado
+	  if (token) {
+	  localStorage.setItem('token', token);
+	  }
 
 	  // Actualiza la vista dentro del modal
 	  avatarImg.src = avatar;

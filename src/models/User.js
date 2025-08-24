@@ -27,10 +27,11 @@ const User = {
     verification_token_expires_at = null,
     last_verification_email_sent_at = null
   }) {
-    await this.query(
+    const [result] = await db.query(
       'INSERT INTO users (username, username_lower, email, password, auth_provider, verification_token, email_verified, avatar, verification_token_expires_at, last_verification_email_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [username, username.toLowerCase(), email, password, auth_provider, verification_token, email_verified, avatar, verification_token_expires_at, last_verification_email_sent_at]
     );
+    return result.insertId;
   },
 
   async existsByEmail(email) {

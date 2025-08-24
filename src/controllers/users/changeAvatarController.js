@@ -2,6 +2,9 @@ import User from '../../models/User.js';
 import fs from 'fs';
 import path from 'path';
 
+// JWT
+import { generateJwt } from '../../utils/jwt.js';
+
 export async function changeAvatar(req, res) {
   try {
     if (!req.file) {
@@ -29,9 +32,21 @@ export async function changeAvatar(req, res) {
     // Guardar el nuevo avatar
     await User.updateById(req.user.id, { avatar: avatarPath });
 
+    // Obtener datos actualizados
+    const updatedUser = await User.findById(req.user.id);
+
+    // Generar nuevo JWT
+    const token = generateJwt ({
+      id: updatedUser.id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      avatar: updatedUser.avatar,
+    });
+
     return res.json({
       message: 'Avatar actualizado correctamente',
-      avatar: avatarPath
+      avatar: updatedUser.avatar,
+      token,
     });
   } catch (err) {
     console.error('Error al actualizar avatar:', err);

@@ -1,11 +1,13 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
-import User from '../models/User.js';
-import config from '../config.js';
 
-// Utils
-import { generateUniqueUsername } from '../utils/username.js'
+// Models
+import User from '../models/User.js';
+import UserProfile from '../models/UserProfile.js';
+
+import config from '../config.js';
+import { generateUniqueUsername } from '../utils/username.js';
 
 // Google Strategy
 passport.use(new GoogleStrategy({
@@ -21,10 +23,9 @@ async (accessToken, refreshToken, profile, done) => {
 
     let user = await User.findByEmail(email);
     if (!user) {
-
       const uniqueUsername = await generateUniqueUsername(displayName);
 
-      await User.create({
+      const newUserId = await User.create({
         username: uniqueUsername,
         email,
         password: null,
@@ -32,6 +33,10 @@ async (accessToken, refreshToken, profile, done) => {
         verification_token: null,
 	email_verified: true
       });
+
+      // Crear perfil de usuario
+      await UserProfile.create(newUserId);
+
       user = await User.findByEmail(email);
     }
 
