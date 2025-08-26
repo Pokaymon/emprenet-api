@@ -2,6 +2,7 @@ import express from 'express';
 import { searchUser } from '../controllers/users/searchUserController.js';
 import { changeAvatar } from '../controllers/users/changeAvatarController.js';
 import { toggleFollow } from '../controllers/users/followController.js';
+import { getUserProfile } from '../controllers/users/getUserProfileController.js';
 
 // Middlewares
 import rateLimiter from '../middlewares/rateLimiter.js';
@@ -23,5 +24,8 @@ router.post(
 
 // POST /users/follow
 router.post('/follow', authMiddleware, toggleFollow);
+
+// GET /users/:id
+router.get('/:id', authMiddleware, getUserProfile);
 
 export default router;

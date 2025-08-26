@@ -1,5 +1,7 @@
 import { changeEmail, resendVerification } from '../hooks/profile.hook.js';
 import { changeAvatar } from '../hooks/avatar.hook.js';
+import { initUserProfileModal } from "../hooks/userProfile.hook.js";
+
 import { showAlert } from './alert.utils.js';
 import { updateAuthUI } from './ui.utils.js';
 
@@ -100,11 +102,9 @@ export function showUserProfileModal({ username }) {
     url: '/modals/userProfileModal.html',
     overlayId: 'profile-modal-overlay',
     modalId: 'profile-modal',
-    onInit: () => {
-      document.querySelector('[data-role="modal-username"]').textContent = `@${username}`;
-      document.querySelector('[data-role="modal-bio"]').textContent =
-        'Este es un perfil de prueba. Aquí va la bio del usuario...';
-    }
+    onInit: ({ overlay, modal }) => {
+      initUserProfileModal({ username, overlay, modal });
+    },
   });
 }
 
