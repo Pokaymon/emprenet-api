@@ -16,26 +16,26 @@
       <div class="flex flex-col items-center gap-6 md:flex-row md:items-start">
         <!-- Avatar -->
         <div class="relative h-32 w-32 overflow-hidden rounded-full border-4 border-blue-500 shadow">
-          <img src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" alt="Avatar usuario" class="h-full w-full object-cover" />
+          <div data-role="modal-avatar" class="h-full w-full bg-gray-200 animate-pulse"></div>
         </div>
 
         <!-- Info del usuario -->
         <div class="flex flex-1 flex-col">
           <!-- Nombre y acciones -->
           <div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <h2 data-role="modal-username" class="text-2xl font-bold text-gray-900 dark:text-white">Nombre de usuario</h2>
-            <button data-role="modal-follow" class="cursor-pointer rounded-md bg-black px-4 py-2 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">Seguir</button>
+            <h2 data-role="modal-username" class="h-6 w-40 bg-gray-200 animate-pulse rounded"></h2>
+            <div data-role="modal-follow" class="h-8 w-24 bg-gray-200 animate-pulse rounded"></div>
           </div>
 
           <!-- Stats -->
           <div class="mb-3 flex gap-6 text-gray-700 dark:text-gray-300">
-            <span><strong class="text-black dark:text-white"> </strong> publicaciones</span>
-            <span><strong class="text-black dark:text-white"> </strong> seguidores</span>
-            <span><strong class="text-black dark:text-white"> </strong> seguidos</span>
+            <span><strong data-role="stat-posts" class="inline-block h-4 w-8 bg-gray-200 animate-pulse rounded"></strong> publicaciones</span>
+            <span><strong data-role="stat-followers" class="inline-block h-4 w-8 bg-gray-200 animate-pulse rounded"></strong> seguidores</span>
+            <span><strong data-role="stat-following" class="inline-block h-4 w-8 bg-gray-200 animate-pulse rounded"></strong> seguidos</span>
           </div>
 
           <!-- Bio -->
-          <p data-role="modal-bio" class="max-w-md text-sm text-gray-600 dark:text-gray-400"></p>
+          <p data-role="modal-bio" class="h-4 w-64 bg-gray-200 animate-pulse rounded"></p>
         </div>
       </div>
 
@@ -46,15 +46,9 @@
       <div>
         <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Publicaciones</h3>
         <div class="grid grid-cols-3 gap-2">
-          <div class="aspect-square cursor-pointer overflow-hidden rounded-md bg-gray-200 transition hover:opacity-90 dark:bg-gray-700">
-            <img src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" alt="Post ejemplo" class="h-full w-full object-cover" />
-          </div>
-          <div class="aspect-square cursor-pointer overflow-hidden rounded-md bg-gray-200 transition hover:opacity-90 dark:bg-gray-700">
-            <img src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" alt="Post ejemplo" class="h-full w-full object-cover" />
-          </div>
-          <div class="aspect-square cursor-pointer overflow-hidden rounded-md bg-gray-200 transition hover:opacity-90 dark:bg-gray-700">
-            <img src="https://cdn.emprenet.work/Icons/default-avatar-2.webp" alt="Post ejemplo" class="h-full w-full object-cover" />
-          </div>
+          <div class="aspect-square overflow-hidden rounded-md bg-gray-200 animate-pulse"></div>
+          <div class="aspect-square overflow-hidden rounded-md bg-gray-200 animate-pulse"></div>
+          <div class="aspect-square overflow-hidden rounded-md bg-gray-200 animate-pulse"></div>
         </div>
       </div>
     </section>
