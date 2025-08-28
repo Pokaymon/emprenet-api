@@ -79,14 +79,14 @@ export function renderFollowButton(profileData, modal, currentUserId) {
 
   // No renderizar si el usuario es el mismo
   if (profileData.id === currentUserId) {
-    followBtn.remove();
+    replaceSkeleton(followBtn, { content: "" });
     return;
   }
 
   // Estado inicial
-  let isFollowing = profileData.isFollowing;
+  let isFollowing = Boolean(profileData.isFollowing);
   followBtn.textContent = isFollowing ? "Dejar de seguir" : "Seguir";
-  applyFollowBtnStyle(followBtn, idFollowing);
+  applyFollowBtnStyle(followBtn, isFollowing);
 
   // Listener
   followBtn.addEventListener("click", async () => {

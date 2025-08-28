@@ -1,12 +1,20 @@
 import { replaceSkeleton } from "../utils/skeleton.utils.js";
 import { updateFollowerCount } from "../utils/ui.utils.js";
 import { renderFollowButton } from "../utils/ui.utils.js";
+import { parseJwt, getAuthToken } from "../utils/token.utils.js";
 
 import { toggleFollow } from "./follow.hook.js";
 
 export async function initUserProfileModal({ username, overlay, modal }) {
-  const token = localStorage.getItem("token");
+  const token = getAuthToken();
   if (!token) return;
+
+  // Decodigicar token
+  const currentUser = parseJwt(token);
+  if (!currentUser?.id) {
+    console.error("No se puedo obtener el usuario actual desde el token");
+    return;
+  }
 
   try {
     // 1. Buscar el usuario por username
@@ -67,38 +75,35 @@ export async function initUserProfileModal({ username, overlay, modal }) {
     // Botón seguir / dejar de seguir
     renderFollowButton(profileData, modal, currentUser.id);
 
-        // Follow / Unfollow
-        btn.addEventListener("click", async () => {
-	  try {
-	    const result = await toggleFollow(profileData.id);
+    // Configurar evento follow/unfollow
+    const btn = modal.querySelector('[data-role="follow-btn"]');
+    if (btn) {
+      btn.addEventListener("click", async () => {
+        try {
+          const result = await toggleFollow(profileData.id);
 
-	    // Invertir estado
-	    const isNowFollowing = result.message.includes("sigues");
-	    btn.textContent = isNowFollowing ? "Dejar de seguir" : "Seguir";
+          const isNowFollowing = result.message.includes("sigues");
+          btn.textContent = isNowFollowing ? "Dejar de seguir" : "Seguir";
 
-	    btn.className = "cursor-pointer rounded-md px-4 py-2 font-medium transition-colors";
-	    if (isNowFollowing) {
-	      btn.classList.add("bg-gray-200", "text-black");
-	    } else {
-	      btn.classList.add(
-		"bg-black",
-		"text-white",
-		"hover:bg-gray-800",
-		"dark:bg-white",
-		"dark:text-black",
-		"dark:hover:bg-gray-200"
-	      );
-	    }
+          btn.className =
+            "cursor-pointer rounded-md px-4 py-2 font-medium transition-colors";
+          if (isNowFollowing) {
+            btn.classList.add("bg-gray-200", "text-black");
+          } else {
+            btn.classList.add(
+              "bg-black",
+              "text-white",
+              "hover:bg-gray-800",
+              "dark:bg-white",
+              "dark:text-black",
+              "dark:hover:bg-gray-200"
+            );
+          }
 
-	    // Update contador de follows
-	    updateFollowerCount(modal, isNowFollowing);
-	  } catch (_){}
-        });
-
-        followEl.replaceWith(btn);
-      }, 300);
+          updateFollowerCount(modal, isNowFollowing);
+        } catch (_) {}
+      });
     }
-
   } catch (err) {
     console.error("Error cargando perfil:", err);
   }
