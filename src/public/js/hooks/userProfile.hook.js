@@ -1,4 +1,5 @@
 import { replaceSkeleton } from "../utils/skeleton.utils.js";
+import { toggleFollow } from "./follow.hook.js";
 
 export async function initUserProfileModal({ username, overlay, modal }) {
   const token = localStorage.getItem("token");
@@ -86,6 +87,38 @@ export async function initUserProfileModal({ username, overlay, modal }) {
             "dark:hover:bg-gray-200"
           );
         }
+
+        // Follow / Unfollow
+        btn.addEventListener("click", async () => {
+	  try {
+	    const result = await toggleFollow(profileData.id);
+
+	    // Invertir estado
+	    const isNowFollowing = result.message.includes("sigues");
+	    btn.textContent = isNowFollowing ? "Dejar de seguir" : "Seguir";
+
+	    btn.className = "cursor-pointer rounded-md px-4 py-2 font-medium transition-colors";
+	    if (isNowFollowing) {
+	      btn.classList.add("bg-gray-200", "text-black");
+	    } else {
+	      btn.classList.add(
+		"bg-black",
+		"text-white",
+		"hover:bg-gray-800",
+		"dark:bg-white",
+		"dark:text-black",
+		"dark:hover:bg-gray-200"
+	      );
+	    }
+
+	    // Update count
+	    const statFollowers = modal.querySelector('[data-role="stat-followers"]');
+	    if (statFollowers) {
+	      let curret = parseInt(statFollowers.textContent) || 0;
+	      statFollowers.textContent = isNowFollowing ? current + 1 : current - 1;
+	    }
+	  } catch (_){}
+        });
 
         followEl.replaceWith(btn);
       }, 300);

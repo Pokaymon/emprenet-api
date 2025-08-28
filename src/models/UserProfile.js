@@ -16,6 +16,7 @@ const UserProfile = {
     return rows[0];
   },
 
+  // Actualización directa
   async updateCounts(userId, fields) {
     const keys = Object.keys(fields);
     const values = Object.values(fields);
@@ -24,6 +25,21 @@ const UserProfile = {
     const query = `UPDATE user_profiles SET ${setClause} WHERE user_id = ?`;
 
     await db.query(query, [...values, userId]);
+  },
+
+  // Helpers para contadores
+  async increment(userId, field) {
+    await db.query(
+      `UPDATE user_profiles SET \`${field}\` = \`${field}\` + 1 WHERE user_id = ?`,
+      [userId]
+    );
+  },
+
+  async decrement(userId, field) {
+    await db.query(
+      `UPDATE user_profiles SET \`${field}\` = GREATEST(\`${field}\` - 1, 0) WHERE user_id = ?`,
+      [userId]
+    );
   }
 };
 
