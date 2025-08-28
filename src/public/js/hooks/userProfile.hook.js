@@ -1,4 +1,7 @@
 import { replaceSkeleton } from "../utils/skeleton.utils.js";
+import { updateFollowerCount } from "../utils/ui.utils.js";
+import { renderFollowButton } from "../utils/ui.utils.js";
+
 import { toggleFollow } from "./follow.hook.js";
 
 export async function initUserProfileModal({ username, overlay, modal }) {
@@ -62,31 +65,7 @@ export async function initUserProfileModal({ username, overlay, modal }) {
     });
 
     // Botón seguir / dejar de seguir
-    const followEl = modal.querySelector('[data-role="modal-follow"]');
-    if (followEl) {
-      // Fade out skeleton
-      followEl.classList.add("transition-opacity", "duration-300", "opacity-0");
-
-      setTimeout(() => {
-        const btn = document.createElement("button");
-        btn.setAttribute("data-role", "modal-follow");
-        btn.className =
-          "cursor-pointer rounded-md px-4 py-2 font-medium transition-colors";
-
-        if (profileData.isFollowing) {
-          btn.textContent = "Dejar de seguir";
-          btn.classList.add("bg-gray-200", "text-black");
-        } else {
-          btn.textContent = "Seguir";
-          btn.classList.add(
-            "bg-black",
-            "text-white",
-            "hover:bg-gray-800",
-            "dark:bg-white",
-            "dark:text-black",
-            "dark:hover:bg-gray-200"
-          );
-        }
+    renderFollowButton(profileData, modal, currentUser.id);
 
         // Follow / Unfollow
         btn.addEventListener("click", async () => {
@@ -111,12 +90,8 @@ export async function initUserProfileModal({ username, overlay, modal }) {
 	      );
 	    }
 
-	    // Update count
-	    const statFollowers = modal.querySelector('[data-role="stat-followers"]');
-	    if (statFollowers) {
-	      let curret = parseInt(statFollowers.textContent) || 0;
-	      statFollowers.textContent = isNowFollowing ? current + 1 : current - 1;
-	    }
+	    // Update contador de follows
+	    updateFollowerCount(modal, isNowFollowing);
 	  } catch (_){}
         });
 
