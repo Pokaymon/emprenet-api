@@ -70,14 +70,14 @@
           </div>
 
           <!-- Formularios: Login -->
-          <form data-role="login-form" class="form-tab flex flex-col gap-4">
+          <form data-role="login-form" class="form-tab absolute inset-0 flex flex-col gap-4 transition-opacity duration-500 ease-in-out">
             <input type="email" placeholder="Correo electrónico" required class="input" />
             <input type="password" placeholder="Contraseña" required class="input" />
             <button type="submit" class="submit-button">Entrar</button>
           </form>
 
           <!-- Formularios: Registro -->
-          <form data-role="register-form" class="form-tab hidden flex-col gap-4">
+          <form data-role="register-form" class="form-tab absolute inset-0 flex-col gap-4 opacity-0 pointer-events-none transition-opacity duration-500 ease-in-out">
             <input type="text" placeholder="Nombre de usuario" required class="input" />
             <input type="email" placeholder="Correo electrónico" required class="input" />
             <input type="password" placeholder="Contraseña" required class="input" />

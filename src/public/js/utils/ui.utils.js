@@ -9,11 +9,17 @@ export function toggleVisibility(el, show) {
 }
 
 export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
-  showForm.classList.replace('hidden', 'flex');
-  hideForm.classList.replace('flex', 'hidden');
+  // Mostrar formulario destino
+  showForm.classList.remove("opacity-0", "pointer-events-none");
+  showForm.classList.add("opacity-100");
 
-  activeBtn.setAttribute('data-state', 'active');
-  inactiveBtn.setAttribute('data-state', 'inactive');
+  // Ocultar formulario actual
+  showForm.classList.remove("opacity-100");
+  showForm.classList.remove("opacity-0", "pointer-events-none");
+
+  // Cambiar estado de los botones
+  showForm.classList.remove("data-state", "active");
+  showForm.classList.remove("data-state", "inactive");
 }
 
 export function updateAuthUI({
@@ -74,12 +80,12 @@ export function updateFollowerCount(modal, isNowFollowing) {
  * @param {string} currentUserId - ID del usuario autenticado
  */
 export function renderFollowButton(profileData, modal, currentUserId) {
-  const followBtn = modal.querySelector("#followBtn");
+  const followBtn = modal.querySelector('[data-role="modal-follow"]');
   if (!followBtn) return;
 
   // No renderizar si el usuario es el mismo
   if (profileData.id === currentUserId) {
-    replaceSkeleton(followBtn, { content: "" });
+    followBtn.remove();
     return;
   }
 
@@ -111,9 +117,14 @@ export function renderFollowButton(profileData, modal, currentUserId) {
  */
 function applyFollowBtnStyle(btn, isFollowing) {
   btn.className =
-    "cursor-pointer rounded-md px-4 py-2 font-medium transition-colors";
+    "cursor-pointer rounded-md px-4 py-2 font-medium transition-all duration-300 ease-in-out transform";
   if (isFollowing) {
-    btn.classList.add("bg-gray-200", "text-black");
+    btn.classList.add(
+      "bg-gray-200",
+      "text-black",
+      "hover:bg-gray-300",
+      "scale-95",
+    );
   } else {
     btn.classList.add(
       "bg-black",
@@ -121,7 +132,8 @@ function applyFollowBtnStyle(btn, isFollowing) {
       "hover:bg-gray-800",
       "dark:bg-white",
       "dark:text-black",
-      "dark:hover:bg-gray-200"
+      "dark:hover:bg-gray-200",
+      "scale-100",
     );
   }
 }
