@@ -61,7 +61,7 @@
      <main class="row-start-2 flex flex-col lg:flex-row gap-8 lg:gap-20 items-center justify-center px-4 lg:px-20 w-full max-w-7xl">
 	
         <!-- LEFT: Login Form -->
-        <div data-role="login-form-container" class="opacity-0 pointer-events-none transitione-opacity duration-300 w-full border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
+        <div data-role="login-form-container" class="opacity-0 pointer-events-none transition-opacity duration-300 w-full border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
 
           <!-- Botones de alternancia -->
           <div class="flex justify-between gap-4 mb-4 w-full">
@@ -69,21 +69,26 @@
             <button data-role="switch-to-register" data-state="inactive" class="tab-button">Registrarse</button>
           </div>
 
-          <!-- Formularios: Login -->
-          <form data-role="login-form" class="form-tab absolute inset-0 flex flex-col gap-4 transition-opacity duration-500 ease-in-out">
-            <input type="email" placeholder="Correo electrónico" required class="input" />
-            <input type="password" placeholder="Contraseña" required class="input" />
-            <button type="submit" class="submit-button">Entrar</button>
-          </form>
+          <!-- Contenedor relativo SOLO para los formularios -->
+          <div class="relative min-h-[220px]">
 
-          <!-- Formularios: Registro -->
-          <form data-role="register-form" class="form-tab absolute inset-0 flex-col gap-4 opacity-0 pointer-events-none transition-opacity duration-500 ease-in-out">
-            <input type="text" placeholder="Nombre de usuario" required class="input" />
-            <input type="email" placeholder="Correo electrónico" required class="input" />
-            <input type="password" placeholder="Contraseña" required class="input" />
-            <input type="password" placeholder="Contraseña" required class="input" />
-            <button type="submit" class="submit-button">Registrarse</button>
-          </form>
+            <!-- Login -->
+            <form data-role="login-form" class="form-tab absolute inset-0 flex flex-col gap-4 transition-opacity duration-500 ease-in-out">
+              <input type="email" placeholder="Correo electrónico" required class="input" />
+              <input type="password" placeholder="Contraseña" required class="input" />
+              <button type="submit" class="submit-button">Entrar</button>
+            </form>
+
+            <!-- Registro -->
+            <form data-role="register-form" class="form-tab absolute inset-0 flex-col gap-4 opacity-0 pointer-events-none transition-opacity duration-500 ease-in-out">
+              <input type="text" placeholder="Nombre de usuario" required class="input" />
+              <input type="email" placeholder="Correo electrónico" required class="input" />
+              <input type="password" placeholder="Contraseña" required class="input" />
+              <input type="password" placeholder="Contraseña" required class="input" />
+              <button type="submit" class="submit-button">Registrarse</button>
+            </form>
+
+          </div>
 
           <!-- Botón de login con Google -->
           <div class="mt-4">

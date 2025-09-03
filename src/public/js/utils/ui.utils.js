@@ -14,12 +14,12 @@ export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
   showForm.classList.add("opacity-100");
 
   // Ocultar formulario actual
-  showForm.classList.remove("opacity-100");
-  showForm.classList.remove("opacity-0", "pointer-events-none");
+  hideForm.classList.remove("opacity-100");
+  hideForm.classList.add("opacity-0", "pointer-events-none");
 
   // Cambiar estado de los botones
-  showForm.classList.remove("data-state", "active");
-  showForm.classList.remove("data-state", "inactive");
+  activeBtn.setAttribute("data-state", "active");
+  inactiveBtn.setAttribute("data-state", "inactive");
 }
 
 export function updateAuthUI({
