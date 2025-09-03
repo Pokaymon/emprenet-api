@@ -24,7 +24,7 @@ export async function handleLogin(e, form, onSuccess) {
   }
 }
 
-export async function handleRegister(e, form) {
+export async function handleRegister(e, form, onSuccess) {
   e.preventDefault();
   const [usernameInput, emailInput, passInput, confirmInput] = form.querySelectorAll('input');
 
@@ -46,8 +46,12 @@ export async function handleRegister(e, form) {
     const data = await res.json();
 
     if (!res.ok) return alertError(data.message || 'Error en registro');
-    alertSuccess(data.message || 'Verifica tu correo.');
-    form.reset();
+    alertSuccess(data.message || 'Verifica tu correo.')
+    .then(() => {
+      form.reset();
+      onSuccess?.();
+    });
+
   } catch {
     alertError('No se pudo conectar al servidor.');
   }

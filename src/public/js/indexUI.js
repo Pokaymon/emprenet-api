@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   els.registerForm?.addEventListener('submit', (e) =>
-    handleRegister(e, els.registerForm)
+    handleRegister(e, els.registerForm, () => {
+      switchTabs(els.loginForm, els.registerForm, els.loginTab, els.registerTab);
+    })
   );
 
   els.logoutButton?.addEventListener('click', () =>

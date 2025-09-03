@@ -17,6 +17,24 @@ export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
   hideForm.classList.remove("opacity-100");
   hideForm.classList.add("opacity-0", "pointer-events-none");
 
+  // Ajustar dinámicamente el alto del wrapper
+  const wrapper = showForm.closest("[data-role='form-wrapper']");
+  if (wrapper) {
+    // Leer altura actual
+    const currentHeight = wrapper.offsetHeight;
+
+    // Forzar transición: primero fijo la altura actual
+    wrapper.style.height = currentHeight + "px";
+
+    // Esperar dos frames antes de medir el nuevo alto
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const newHeight = showForm.scrollHeight;
+        wrapper.style.height = newHeight + "px";
+      });
+    });
+  }
+
   // Cambiar estado de los botones
   activeBtn.setAttribute("data-state", "active");
   inactiveBtn.setAttribute("data-state", "inactive");
