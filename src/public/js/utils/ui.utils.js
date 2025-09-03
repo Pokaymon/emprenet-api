@@ -23,15 +23,14 @@ export function switchTabs(showForm, hideForm, activeBtn, inactiveBtn) {
     // Leer altura actual
     const currentHeight = wrapper.offsetHeight;
 
+    // Calcular nueva altura
+    const newHeight = showForm.scrollHeight;
+
     // Forzar transición: primero fijo la altura actual
     wrapper.style.height = currentHeight + "px";
 
-    // Esperar dos frames antes de medir el nuevo alto
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const newHeight = showForm.scrollHeight;
-        wrapper.style.height = newHeight + "px";
-      });
+      wrapper.style.height = newHeight + "px";
     });
   }
 

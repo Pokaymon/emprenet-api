@@ -46,9 +46,11 @@ export async function handleRegister(e, form, onSuccess) {
     const data = await res.json();
 
     if (!res.ok) return alertError(data.message || 'Error en registro');
+
+    form.reset();
+
     alertSuccess(data.message || 'Verifica tu correo.')
     .then(() => {
-      form.reset();
       onSuccess?.();
     });
 
