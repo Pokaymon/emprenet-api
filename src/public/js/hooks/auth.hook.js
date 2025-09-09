@@ -51,7 +51,9 @@ export async function handleRegister(e, form, onSuccess) {
 
     alertSuccess(data.message || 'Verifica tu correo.')
     .then(() => {
-      onSuccess?.();
+      setTimeout(() => {
+	onSuccess?.();
+      }, 100);
     });
 
   } catch {
