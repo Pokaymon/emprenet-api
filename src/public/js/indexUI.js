@@ -1,8 +1,8 @@
 import { handleLogin, handleRegister, logout } from './hooks/auth.hook.js';
 import { updateAuthUI, switchTabs } from './utils/ui.utils.js';
 import { getTokenFromURL } from './utils/token.utils.js';
-import { showConfigProfileModal } from './utils/modal.utils.js';
-import { showChangeAvatarModal } from './utils/modal.utils.js';
+import { showConfigProfileModal, showChangeAvatarModal } from './utils/modal.utils.js';
+import { initTheme, toggleTheme } from './utils/theme.utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const els = {
@@ -24,7 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // changeAvatar
     changeAvatarBtn: document.querySelector('[data-role="change-avatar-btn"]'),
     sidebarAvatar: document.querySelector('[data-role="sidebar-avatar"]'),
+
+    // theme
+    themeToggle: document.querySelector('[data-role="theme-toggle"]'),
   };
+
+  // Iniciar tema al cargar
+  initTheme();
 
   const tokenFromUrl = getTokenFromURL();
   if (tokenFromUrl) {
@@ -34,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Llamada inicial
   updateAuthUI(els);
+
+  // Cambio de tema
+  els.themeToggle?.addEventListener("click", toggleTheme);
 
   // Mostrar login form
   els.loginButton?.addEventListener('click', () =>
