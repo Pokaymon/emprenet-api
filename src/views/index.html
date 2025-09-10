@@ -224,6 +224,21 @@
       </footer>
     </div>
 
+    <!-- Botón de cambio de tema -->
+    <button
+      data-role="theme-toggle"
+      class="fixed bottom-15 left-15 p-4 cursor-pointer rounded-full shadow-lg border border-gray-300 dark:border-gray-700 
+             bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 
+             hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+    >
+      <!-- Icono Sol/Luna (por ahora está estático, luego lo haremos dinámico) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 3v1m0 16v1m8.66-9H21m-18 0h1m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.02 12.02l-.7-.7M6.34 17.66l-.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z" />
+      </svg>
+    </button>
+
     <!-- Index Scripts -->
     <script type="module" src="/js/indexUI.js"></script>
 
