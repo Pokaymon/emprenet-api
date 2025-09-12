@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // theme
     themeToggle: document.querySelector('[data-role="theme-toggle"]'),
+
+    // chat
+    chatToggle: document.querySelector('[data-role="chat-toggle"]'),
+    chatClose: document.querySelector('[data-role="chat-close"]'),
+    chatBack: document.querySelector('[data-role="chat-back"]'),
+    chatContainer: document.querySelector('[data-role="chat-container"]'),
+    chatUser: document.querySelector('[data-role="chat-user"]'),
+    chatConversation: document.querySelector('[data-role="chat-conversation"]'),
   };
 
   // Iniciar tema al cargar
@@ -43,6 +51,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cambio de tema
   els.themeToggle?.addEventListener("click", toggleTheme);
+
+  // Mostrar / Cerrar chat
+  els.chatToggle?.addEventListener("click", () => {
+    els.chatContainer.classList.toggle('opacity-0');
+    els.chatContainer.classList.toggle('pointer-events-none');
+  });
+
+  // Cerrar chat
+  els.chatClose?.addEventListener("click", () => {
+    els.chatContainer.classList.toggle('opacity-0');
+    els.chatContainer.classList.toggle('pointer-events-none');
+  });
+
+  // Abrir conversación
+  els.chatUser?.addEventListener("click", () => {
+    els.chatConversation.classList.remove('opacity-0');
+    els.chatConversation.classList.remove('pointer-events-none');
+  });
+
+  // Cerrar conversación
+  els.chatBack.addEventListener("click", () => {
+    els.chatConversation.classList.add('opacity-0');
+    els.chatConversation.classList.add('pointer-events-none');
+  });
 
   // Mostrar login form
   els.loginButton?.addEventListener('click', () =>

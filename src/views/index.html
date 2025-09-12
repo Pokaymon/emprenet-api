@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="bg-white text-black dark:bg-black dark:text-white">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   </head>
-  <body class="min-h-screen font-sans">
+  <body class="min-h-screen font-sans bg-white text-black dark:bg-black dark:text-white">
 
     <!-- HEADER -->
     <header class="fixed pt-6 left-0 w-full flex z-50">
@@ -59,92 +59,232 @@
 
       <!-- MAIN -->
      <main class="row-start-2 flex flex-col lg:flex-row gap-8 lg:gap-20 items-center justify-center px-4 lg:px-20 w-full max-w-7xl">
-	
-        <!-- LEFT: Login Form -->
-        <div data-role="login-form-container" class="opacity-0 pointer-events-none transition-opacity duration-300 w-full border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
 
-          <!-- Botones de alternancia -->
-          <div class="flex justify-between gap-4 mb-4 w-full">
-            <button data-role="switch-to-login" data-state="active" class="tab-button">Ingresar</button>
-            <button data-role="switch-to-register" data-state="inactive" class="tab-button">Registrarse</button>
+       <!-- LEFT WRAPPER -->
+       <div class="relative w-full max-w-lg">
+
+         <!-- AUTH: Capa 1 -->
+         <div data-role="login-form-container" class="opacity-0 pointer-events-none transition-opacity duration-300 w-full border rounded-2xl p-6 shadow-lg dark:border-white/10 bg-white dark:bg-white/5">
+           <!-- Botones de alternancia -->
+           <div class="flex justify-between gap-4 mb-4 w-full">
+             <button data-role="switch-to-login" data-state="active" class="tab-button">Ingresar</button>
+             <button data-role="switch-to-register" data-state="inactive" class="tab-button">Registrarse</button>
+           </div>
+
+           <!-- Contenedor relativo -->
+           <div class="relative transition-[height] duration-500 ease-in-out overflow-hidden" data-role="form-wrapper">
+             <!-- Login -->
+             <form data-role="login-form" class="form-tab flex flex-col gap-4 transition-opacity duration-500 ease-in-out opacity-100">
+               <input type="email" placeholder="Correo electrónico" required class="input" />
+               <input type="password" placeholder="Contraseña" required class="input" />
+               <button type="submit" class="submit-button">Entrar</button>
+             </form>
+
+             <!-- Registro -->
+  	     <form data-role="register-form" class="form-tab flex flex-col gap-4 transition-opacity duration-500 ease-in-out opacity-0 pointer-events-none absolute inset-0">
+    	       <input type="text" placeholder="Nombre de usuario" required class="input" />
+    	       <input type="email" placeholder="Correo electrónico" required class="input" />
+    	       <input type="password" placeholder="Contraseña" required class="input" />
+    	       <input type="password" placeholder="Confirmar contraseña" required class="input" />
+               <button type="submit" class="submit-button">Registrarse</button>
+             </form>
+           </div>
+
+           <!-- Botón de login con Google -->
+           <div class="mt-4">
+             <a
+      	       href="https://api.emprenet.work/auth/google"
+               class="w-full inline-flex items-center justify-center gap-2 border border-gray-300 dark:border-gray-700 rounded-md px-4 py-2 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+             >
+               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+               Iniciar sesión con Google
+             </a>
+           </div>
+         </div>
+
+         <!-- CHAT: Capa 2 -->
+         <div data-role="chat-container" class="opacity-0 pointer-events-none transition-opacity duration-300 border rounded-2xl w-full shadow-lg bg-white dark:bg-gray-900 dark:border-white/10 absolute inset-0">
+           <div class="p-4 border-b dark:border-white/10 flex justify-between items-center">
+             <h2 class="font-semibold text-lg ">Mensajes</h2>
+             <button data-role="chat-close" class="text-gray-500 transition-colors duration-300 cursor-pointer hover:text-gray-800 dark:hover:text-gray-200"> ✕ </button>
+           </div>
+
+           <!-- Lista de usuarios -->
+           <div class="p-4 flex flex-col gap-3 overflow-y-auto max-h-[calc(100%-3rem)]">
+    
+             <!-- Usuario -->
+    	     <div data-role="chat-user" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+      	       <img
+                 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-10 h-10 rounded-full object-cover"
+      	       />
+      	       <div class="flex-1 text-left">
+        	 <p class="font-medium text-sm text-gray-900 dark:text-white">Juan Pérez</p>
+        	 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Último mensaje...</p>
+      	       </div>
+      	       <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+    	     </div>
+
+    	     <!-- Otro usuario -->
+    	     <div data-role="chat-user" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+      	       <img
+        	 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-10 h-10 rounded-full object-cover"
+      	       />
+      	       <div class="flex-1 text-left">
+        	 <p class="font-medium text-sm text-gray-900 dark:text-white">María Gómez</p>
+        	 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">¿Nos vemos mañana?</p>
+      	       </div>
+      	       <span class="w-3 h-3 bg-gray-400 rounded-full"></span>
+    	     </div>
+
+           </div>
+
+         </div>
+
+         <!-- CHAT: Capa 3 (Conversación con un usuario) -->
+         <div
+  	   data-role="chat-conversation"
+  	   class="opacity-0 pointer-events-none transition-opacity duration-300 
+           border rounded-2xl w-full shadow-lg 
+           bg-white dark:bg-gray-900 dark:border-white/10 absolute inset-0 flex flex-col"
+	 >
+  	   <!-- Header -->
+  	   <div class="p-4 border-b dark:border-white/10 flex justify-between items-center">
+    	     <div class="flex items-center gap-3">
+      	       <img
+        	 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-10 h-10 rounded-full object-cover"
+      	       />
+      	       <div>
+        	 <p class="font-medium text-sm text-gray-900 dark:text-white">Juan Pérez</p>
+        	 <p class="text-xs text-gray-500 dark:text-gray-400">En línea</p>
+      	       </div>
+    	     </div>
+    	     <button
+               data-role="chat-back"
+               class="p-2 ronded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+               aria-label="Volver"
+             >
+	       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+		    stroke-width="2" stroke="currentColor" class="w-6 h-6">
+	         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+	       </svg>
+             </button>
+           </div>
+
+           <!-- Mensajes -->
+  	   <div class="flex-1 p-4 flex flex-col gap-3 overflow-y-auto">
+    	     <!-- Mensaje recibido -->
+    	     <div class="flex items-start gap-2">
+      	       <img
+        	 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-8 h-8 rounded-full object-cover"
+      	       />
+      	       <div class="max-w-xs bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 text-sm">
+        	 <p>¡Hola! 👋</p>
+       	       </div>
+    	     </div>
+
+             <!-- Mensaje recibido -->
+    	     <div class="flex items-start gap-2">
+      	       <img
+        	 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-8 h-8 rounded-full object-cover"
+      	       />
+      	       <div class="max-w-xs bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 text-sm">
+        	 <p>¿Cómo vas con el proyecto?</p>
+      	       </div>
+    	     </div>
+
+             <!-- Mensaje enviado -->
+    	     <div class="flex items-end gap-2 justify-end">
+      	       <div class="max-w-xs bg-blue-500 text-white rounded-lg px-3 py-2 text-sm">
+        	 <p>¡Todo bien! Avanzando 🚀</p>
+      	       </div>
+      	       <img
+                 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-8 h-8 rounded-full object-cover"
+      	       />
+    	     </div>
+
+             <!-- Mensaje enviado -->
+    	     <div class="flex items-end gap-2 justify-end">
+      	       <div class="max-w-xs bg-blue-500 text-white rounded-lg px-3 py-2 text-sm">
+        	 <p>Ya casi termino la parte del login 🔑</p>
+      	       </div>
+      	       <img
+        	 src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
+        	 alt="Avatar"
+        	 class="w-8 h-8 rounded-full object-cover"
+      	       />
+    	     </div>
+  	   </div>
+
+          <!-- Input -->
+          <div class="p-4 border-t dark:border-white/10 flex items-center gap-2">
+    	    <input
+      	      type="text"
+      	      placeholder="Escribe un mensaje..."
+      	      class="flex-1 rounded-full border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
+    	    />
+    	    <button class="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 transition-colors">➤</button>
           </div>
-
-          <!-- Contenedor relativo -->
-          <div class="relative transition-[height] duration-500 ease-in-out overflow-hidden" data-role="form-wrapper">
-            <!-- Login -->
-            <form data-role="login-form"
-                  class="form-tab flex flex-col gap-4 transition-opacity duration-500 ease-in-out opacity-100">
-              <input type="email" placeholder="Correo electrónico" required class="input" />
-              <input type="password" placeholder="Contraseña" required class="input" />
-              <button type="submit" class="submit-button">Entrar</button>
-            </form>
-
-            <!-- Registro -->
-  	    <form data-role="register-form"
-       	          class="form-tab flex flex-col gap-4 transition-opacity duration-500 ease-in-out opacity-0 pointer-events-none absolute inset-0">
-    	      <input type="text" placeholder="Nombre de usuario" required class="input" />
-    	      <input type="email" placeholder="Correo electrónico" required class="input" />
-    	      <input type="password" placeholder="Contraseña" required class="input" />
-    	      <input type="password" placeholder="Confirmar contraseña" required class="input" />
-              <button type="submit" class="submit-button">Registrarse</button>
-            </form>
-          </div>
-
-          <!-- Botón de login con Google -->
-          <div class="mt-4">
-            <a
-      	      href="https://api.emprenet.work/auth/google"
-              class="w-full inline-flex items-center justify-center gap-2 border border-gray-300 dark:border-gray-700 rounded-md px-4 py-2 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
-              Iniciar sesión con Google
-            </a>
-          </div>
-
         </div>
+
+
+       </div>
 
         <!-- CENTER: Actual contenido -->
-        <div class="w-full max-w-sm flex flex-col gap-8 text-center lg:text-left">
-          <img
-            class="dark:invert"
-            src="https://cdn.emprenet.work/Logos/ApiLogo.webp"
-            alt="EmpreNet logo"
-            width="240"
-          />
-          <ul class="list-inside list-disc text-sm font-mono">
-            <li class="mb-2 tracking-tight">
-              Esta es la <strong>API</strong> de <code class="bg-black/5 dark:bg-white/10 px-1 py-0.5 rounded font-semibold">EmpreNet.work</code>.
-            </li>
-            <li class="tracking-tight">
-              Estamos en la fase de development
-            </li>
-          </ul>
-          <div class="flex gap-4 items-center flex-col sm:flex-row">
-            <a
-              class="rounded-full border border-transparent transition-colors flex items-center justify-center bg-black text-white dark:bg-white dark:text-black gap-2 hover:bg-gray-800 dark:hover:bg-gray-200 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-              href="https://unidadestecno-my.sharepoint.com/:f:/g/personal/jasocha_uts_edu_co/EhTaGE0X9udOlcGW2Ke_ih0BsoenjeXxP31VEgy3CkkGxw?e=R8M9tV"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <!-- Icono de documento -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" />
-              </svg>
-              Documents
-            </a>
-            <a
-              class="rounded-full border border-black/10 dark:border-white/25 transition-colors flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-900 hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto gap-2"
-              href="#"
-	      data-role="login-button"
-            >
-              <!-- Icono de login/usuario -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Log in
-            </a>
+        <div class="w-full max-w-sm flex justify-center">
+          <div class="flex flex-col gap-8 text-center lg:text-left">
+            <img
+              class="dark:invert"
+              src="https://cdn.emprenet.work/Logos/ApiLogo.webp"
+              alt="EmpreNet logo"
+             width="240"
+            /> 
+            <ul class="list-inside list-disc text-sm font-mono">
+              <li class="mb-2 tracking-tight">
+                Esta es la <strong>API</strong> de <code class="bg-black/5 dark:bg-white/10 px-1 py-0.5 rounded font-semibold">EmpreNet.work</code>.
+              </li>
+              <li class="tracking-tight">
+                Estamos en la fase de development
+              </li>
+            </ul>
+            <div class="flex gap-4 items-center flex-col sm:flex-row">
+              <a
+                class="rounded-full border border-transparent transition-colors flex items-center justify-center bg-black text-white dark:bg-white dark:text-black gap-2 hover:bg-gray-800 dark:hover:bg-gray-200 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+                href="https://unidadestecno-my.sharepoint.com/:f:/g/personal/jasocha_uts_edu_co/EhTaGE0X9udOlcGW2Ke_ih0BsoenjeXxP31VEgy3CkkGxw?e=R8M9tV"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <!-- Icono de documento -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" />
+                </svg>
+                Documents
+              </a>
+              <a
+                class="rounded-full border border-black/10 dark:border-white/25 transition-colors flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-900 hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto gap-2"
+                href="#"
+	        data-role="login-button"
+              >
+                <!-- Icono de login/usuario -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Log in
+              </a>
+            </div>
           </div>
-        </div>
+	</div>
 
         <!-- RIGHT: Imagen circular -->
         <div data-role="user-image" class="pointer-events-none opacity-0 transition-opacity duration-300 w-full max-w-sm flex justify-center items-center">
@@ -202,7 +342,7 @@
           href="https://github.com/Pokaymon/emprenet-api"
           target="_blank"
         >
-          <img src="https://cdn.emprenet.work/Icons/github-logo.svg" alt="GitHub icon" width="16" height="16" />
+          <img class="dark:invert" src="https://cdn.emprenet.work/Icons/github-logo.svg" alt="GitHub icon" width="16" height="16" />
           GitHub
         </a>
         <a
@@ -210,7 +350,7 @@
           href="https://emprenet.work"
           target="_blank"
         >
-          <img src="https://cdn.emprenet.work/Favicons/NetFavicon.svg" alt="Sitio icon" width="16" height="16" />
+          <img class="dark:invert" src="https://cdn.emprenet.work/Favicons/NetFavicon.svg" alt="Sitio icon" width="16" height="16" />
           Ir a EmpreNet.work →
         </a>
         <a
@@ -218,24 +358,39 @@
           href="https://cdn.emprenet.work/"
           target="_blank"
         >
-          <img src="https://cdn.emprenet.work/Icons/azure_icon.svg" alt="Despliegue" width="16" height="16" />
+          <img class="dark:invert" src="https://cdn.emprenet.work/Icons/azure_icon.svg" alt="Despliegue" width="16" height="16" />
           Assets
         </a>
       </footer>
     </div>
 
-    <!-- Botón de cambio de tema -->
+    <!-- Botón de cambio de tema
     <button
       data-role="theme-toggle"
       class="fixed bottom-15 left-15 p-4 cursor-pointer rounded-full shadow-lg border border-gray-300 dark:border-gray-700 
              bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 
              hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
     >
-      <!-- Icono Sol/Luna (por ahora está estático, luego lo haremos dinámico) -->
+      <!-- Icono Sol/Luna (por ahora está estático, luego lo haremos dinámico)
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M12 3v1m0 16v1m8.66-9H21m-18 0h1m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.02 12.02l-.7-.7M6.34 17.66l-.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z" />
+      </svg>
+    </button>
+
+    <!-- Botón de mensajería -->
+    <button
+      data-role="chat-toggle"
+      class="fixed opacity-0 pointer-events-none bottom-15 left-15 p-4 cursor-pointer rounded-full shadow-lg border border-gray-300 dark:border-gray-700 
+             bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 
+             hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+    >
+      <!-- Icono chat -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4.29-.94L3 20l1.37-3.42C3.5 15.39 3 13.74 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
       </svg>
     </button>
 
