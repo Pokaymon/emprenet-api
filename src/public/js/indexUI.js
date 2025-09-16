@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatClose: document.querySelector('[data-role="chat-close"]'),
     chatBack: document.querySelector('[data-role="chat-back"]'),
     chatContainer: document.querySelector('[data-role="chat-container"]'),
+    chatOverlay: document.querySelector('[data-role="chat-overlay"]'),
     chatUser: document.querySelector('[data-role="chat-user"]'),
     chatConversation: document.querySelector('[data-role="chat-conversation"]'),
   };
@@ -54,14 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mostrar / Cerrar chat
   els.chatToggle?.addEventListener("click", () => {
-    els.chatContainer.classList.toggle('opacity-0');
-    els.chatContainer.classList.toggle('pointer-events-none');
+    els.chatOverlay.classList.toggle('opacity-0');
+    els.chatOverlay.classList.toggle('pointer-events-none');
   });
 
   // Cerrar chat
   els.chatClose?.addEventListener("click", () => {
-    els.chatContainer.classList.toggle('opacity-0');
-    els.chatContainer.classList.toggle('pointer-events-none');
+    els.chatOverlay.classList.toggle('opacity-0');
+    els.chatOverlay.classList.toggle('pointer-events-none');
   });
 
   // Abrir conversación
@@ -77,9 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Mostrar login form
-  els.loginButton?.addEventListener('click', () =>
-    els.loginFormContainer.classList.toggle('opacity-0')
-  );
+  els.loginButton?.addEventListener('click', () => {
+    const isHidden = els.loginFormContainer.classList.contains('opacity-0');
+    if (isHidden) {
+      els.loginFormContainer.classList.remove('opacity-0', 'pointer-events-none');
+      els.loginFormContainer.classList.add('opacity-100');
+    } else {
+      els.loginFormContainer.classList.add('opacity-0', 'pointer-events-none');
+      els.loginFormContainer.classList.remove('opacity-100');
+    }
+  });
 
   // Mostrar sidebar
   els.userImage?.addEventListener('click', () => {

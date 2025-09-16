@@ -7,38 +7,55 @@
     @apply rounded border bg-white dark:bg-black dark:text-white;
     @apply px-4 py-2 border-gray-300 dark:border-gray-700;
   }
-
   .submit-button {
     @apply rounded-md transition-colors;
     @apply cursor-pointer;
     @apply bg-black text-white dark:bg-white dark:text-black;
     @apply px-4 py-2 hover:bg-gray-800 dark:hover:bg-gray-200;
   }
-
   .tab-button {
     @apply rounded-md font-semibold transition-all duration-300 ease-in-out;
     @apply px-4 py-2;
     @apply cursor-pointer;
   }
-
   .tab-button[data-state="active"] {
     @apply bg-black text-white dark:bg-white dark:text-black;
   }
-
   .tab-button[data-state="inactive"] {
     @apply bg-gray-200 text-black dark:bg-gray-700 dark:text-white;
   }
-
   .tab-button:hover {
     @apply scale-105;
   }
-
   .form-tab-enter {
     @apply opacity-0 translate-x-4;
   }
-
   .form-tab-enter-active {
     @apply transition-all duration-300 opacity-100 translate-x-0;
   }
 }
 
+/* Utilidades personalizadas (scrollbar) */
+@layer utilities {
+  /* Scrollbar delgada y elegante */
+  .scroll-thin {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #9ca3af transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background-color: #9ca3af; /* gray-400 */
+    border-radius: 9999px; /* pill */
+  }
+  .scroll-hidden {
+    scrollbar-width: none; /* Firefox */
+  }
+  .scroll-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+}

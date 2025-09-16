@@ -46,18 +46,24 @@ export function updateAuthUI({
   searchUsersContainer,
   sidebarAvatar,
   chatToggle,
-  chatContainer,
+  chatOverlay,
 }) {
   const token = localStorage.getItem('token');
   const isAuthenticated = Boolean(token);
 
-  toggleVisibility(loginFormContainer, !isAuthenticated);
+  if (isAuthenticated) {
+    toggleVisibility(loginFormContainer, false);
+  }
+
+  if (!isAuthenticated) {
+    toggleVisibility(chatOverlay, false);
+  }
+
   toggleVisibility(loginButton, !isAuthenticated);
   toggleVisibility(userImage, isAuthenticated);
   toggleVisibility(searchUsersContainer, isAuthenticated);
 
   toggleVisibility(chatToggle, isAuthenticated);
-  toggleVisibility(chatContainer, isAuthenticated);
 
   if (isAuthenticated) {
     const user = parseJwt(token);
