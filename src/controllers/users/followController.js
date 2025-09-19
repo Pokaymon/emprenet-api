@@ -1,6 +1,8 @@
 import Follow from '../../models/Follow.js';
 import UserProfile from '../../models/UserProfile.js';
 
+import { getIO } from '../../sockets/socket.js';
+
 export const toggleFollow = async (req, res) => {
   try {
     const followerId = req.user.id; // viene del authMiddleware
@@ -19,6 +21,9 @@ export const toggleFollow = async (req, res) => {
       await UserProfile.decrement(followerId, 'seguidos');
       await UserProfile.decrement(userId, 'seguidores');
 
+      // Emitir al user que acaba de hacer unfollow
+      getIO().to(followerId).emit("following:updated");
+
       return res.json({ message: "Dejaste de seguir al usuario." });
     } else {
       await Follow.follow(followerId, userId);
@@ -26,6 +31,9 @@ export const toggleFollow = async (req, res) => {
       // Incrementar contadores
       await UserProfile.increment(followerId, 'seguidos');
       await UserProfile.increment(userId, 'seguidores');
+
+      // Emitir al user que acaba de hacer follow
+      getIO().to(followerId).emit("following:updated");
 
       return res.json({ message: "Ahora sigues al usuario." });
     }

@@ -68,3 +68,5 @@ const setupRedisAdapter = async (ioInstance) => {
 
   ioInstance.adapter(createAdapter(pubClient, subClient));
 };
+
+export const getIO = () => io;

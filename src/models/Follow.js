@@ -21,6 +21,18 @@ const Follow = {
       [followerId, followedId]
     );
     return rows.length > 0;
+  },
+
+  // Obtener usuarios seguidos
+  async getFollowingUsers(followerId) {
+    const [rows] = await db.query(
+      `SELECT u.id, u.username, u.avatar
+       FROM follows f
+       JOIN users u ON f.followed_id = u.id
+       WHERE f.follower_id = ?`,
+       [followerId]
+    );
+    return rows;
   }
 };
 

@@ -1,4 +1,6 @@
 import { handleLogin, handleRegister, logout } from './hooks/auth.hook.js';
+import { initFollowingSocket } from './hooks/userChat.hook.js';
+
 import { updateAuthUI, switchTabs } from './utils/ui.utils.js';
 import { getTokenFromURL } from './utils/token.utils.js';
 import { showConfigProfileModal, showChangeAvatarModal } from './utils/modal.utils.js';
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatBack: document.querySelector('[data-role="chat-back"]'),
     chatContainer: document.querySelector('[data-role="chat-container"]'),
     chatOverlay: document.querySelector('[data-role="chat-overlay"]'),
+    chatUsersList: document.querySelector('[data-role="chat-users-list"]'),
     chatUser: document.querySelector('[data-role="chat-user"]'),
     chatConversation: document.querySelector('[data-role="chat-conversation"]'),
   };
@@ -45,6 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tokenFromUrl) {
     localStorage.setItem('token', tokenFromUrl);
     window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    const socket = io("https://api.emprenet.work", { auth: { token } });
+    initFollowingSocket(socket, els);
   }
 
   // Llamada inicial
@@ -96,7 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   els.loginForm?.addEventListener('submit', (e) =>
-    handleLogin(e, els.loginForm, () => updateAuthUI(els))
+    handleLogin(e, els.loginForm, () => {
+      updateAuthUI(els);
+
+      const token = localStorage.getItem("token");
+      if (token) {
+        const socket = io("https://api.emprenet.work", { auth: { token } });
+        initFollowingSocket(socket, els);
+      }
+    })
   );
 
   els.registerForm?.addEventListener('submit', (e) =>

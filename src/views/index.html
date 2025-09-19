@@ -13,6 +13,9 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Socket-Client -->
+    <script src="/js/socket.io.min.js"></script>
+    
   </head>
   <body class="min-h-screen font-sans bg-white text-black dark:bg-black dark:text-white">
 
@@ -112,35 +115,8 @@
              </div>
 
              <!-- Lista de usuarios -->
-             <div class="p-4 flex flex-col gap-3 overflow-y-auto max-h-[calc(100%-3rem)]">
+             <div data-role="chat-users-list" class="p-4 flex flex-col gap-3 overflow-y-auto max-h-[calc(100%-3rem)]">
     
-               <!-- Usuario -->
-    	       <div data-role="chat-user" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
-      	         <img
-                   src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
-        	   alt="Avatar"
-        	   class="w-10 h-10 rounded-full object-cover"
-      	         />
-      	         <div class="flex-1 text-left">
-        	   <p class="font-medium text-sm text-gray-900 dark:text-white">Juan Pérez</p>
-        	   <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Último mensaje...</p>
-      	         </div>
-      	         <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-    	       </div>
-
-    	       <!-- Otro usuario -->
-    	       <div data-role="chat-user" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
-      	         <img
-        	   src="https://cdn.emprenet.work/Icons/default-avatar-2.webp"
-        	   alt="Avatar"
-        	   class="w-10 h-10 rounded-full object-cover"
-      	         />
-      	         <div class="flex-1 text-left">
-        	   <p class="font-medium text-sm text-gray-900 dark:text-white">María Gómez</p>
-        	   <p class="text-xs text-gray-500 dark:text-gray-400 truncate">¿Nos vemos mañana?</p>
-      	         </div>
-      	         <span class="w-3 h-3 bg-gray-400 rounded-full"></span>
-    	       </div>
              </div>
            </div>
 
