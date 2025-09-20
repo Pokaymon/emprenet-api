@@ -33,6 +33,9 @@ export const initSocket = async (httpServer) => {
   io.on('connection', (socket) => {
     console.log(`✅ Usuario conectado: ${socket.user.username}`);
 
+    // Unir socket a sala identificada por su id
+    socket.join(socket.user.id);
+
     socket.on('private_message', async ({ to, content }) => {
       const message = new Message({
         from: socket.user.id,
@@ -43,6 +46,7 @@ export const initSocket = async (httpServer) => {
 
       await message.save();
 
+      // Enviar a sala del destinatario
       io.to(to).emit('private_message', {
         from: socket.user.id,
         content,

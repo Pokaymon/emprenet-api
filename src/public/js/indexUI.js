@@ -1,10 +1,10 @@
 import { handleLogin, handleRegister, logout } from './hooks/auth.hook.js';
-import { initFollowingSocket } from './hooks/userChat.hook.js';
 
 import { updateAuthUI, switchTabs } from './utils/ui.utils.js';
 import { getTokenFromURL } from './utils/token.utils.js';
 import { showConfigProfileModal, showChangeAvatarModal } from './utils/modal.utils.js';
 import { initTheme, toggleTheme } from './utils/theme.utils.js';
+import { connectSocket, disconnectSocket } from './utils/socket.utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const els = {
@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const token = localStorage.getItem("token");
   if (token) {
-    const socket = io("https://api.emprenet.work", { auth: { token } });
-    initFollowingSocket(socket, els);
+    connectSocket(token, els);
   }
 
   // Llamada inicial
@@ -110,8 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const token = localStorage.getItem("token");
       if (token) {
-        const socket = io("https://api.emprenet.work", { auth: { token } });
-        initFollowingSocket(socket, els);
+        connectSocket(token, els);
       }
     })
   );
@@ -122,9 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
 
-  els.logoutButton?.addEventListener('click', () =>
-    logout(() => updateAuthUI(els), els.sidebar)
-  );
+  els.logoutButton?.addEventListener('click', () => {
+    logout(() => {
+      updateAuthUI(els);
+      disconnectSocket();
+    }, els.sidebar);
+  });
 
   // Modal
   els.profileLink?.addEventListener('click', () => {

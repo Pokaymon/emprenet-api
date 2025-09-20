@@ -51,9 +51,7 @@ export function updateAuthUI({
   const token = localStorage.getItem('token');
   const isAuthenticated = Boolean(token);
 
-  if (isAuthenticated) {
-    toggleVisibility(loginFormContainer, false);
-  }
+  toggleVisibility(loginFormContainer, !isAuthenticated);
 
   if (!isAuthenticated) {
     toggleVisibility(chatOverlay, false);

@@ -16,9 +16,20 @@ export async function handleLogin(e, form, onSuccess) {
     if (!res.ok) return alertError(data.message || 'Error en login');
 
     localStorage.setItem('token', data.token);
-    data.warning ? alertWarning(data.warning) : alertSuccess(data.message);
+
+    const swalPromise = data.warning
+      ? alertWarning(data.warning)
+      : alertSuccess(data.message);
+
     form.reset();
-    onSuccess?.();
+
+    // Esperar a cerrar alerta
+    await swalPromise;
+
+    if (!data.warning) {
+      onSuccess?.();
+    }
+
   } catch {
     alertError('No se pudo conectar al servidor.');
   }

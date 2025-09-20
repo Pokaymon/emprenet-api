@@ -21,6 +21,10 @@ async function fetchFollowing() {
 }
 
 export function initFollowingSocket(socket, els) {
+  // Carga inicial de seguidos al conectar
+  fetchFollowing().then(users => renderFollowing(users, els));
+
+  // Cuando cambie la lista en el backend
   socket.on("following:updated", async () => {
     console.log("Lista de seguidos actualizada...");
     const users = await fetchFollowing();
@@ -36,10 +40,20 @@ function renderFollowing(users, els) {
 
   if (users.length === 0) {
     chatList.innerHTML = `
-      <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500 dark:text-gray-400">
-        <img src="https://cdn.emprenet.work/Icons/empty-chat.svg" alt="Sin chats" class="w-16 h-16 mb-3 opacity-70" />
-        <p class="font-medium text-sm">Aún no sigues a nadie</p>
-        <p class="text-xs">Cuando sigas a alguien, aparecerá aquí para que puedas chatear con él.</p>
+      <div class="flex flex-col items-center justify-center py-10 text-center">
+        <div class="w-20 h-20 flex items-center justify-center">
+          <img 
+            src="https://cdn.emprenet.work/Icons/png/empyChatlist.png" 
+            alt="Sin chats" 
+            class="max-w-full max-h-full opacity-70 dark:invert"
+          />
+        </div>
+        <p class="mt-3 font-medium text-sm text-gray-600 dark:text-gray-300">
+          Aún no sigues a nadie
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Cuando sigas a alguien, aparecerá aquí para que puedas chatear con él.
+        </p>
       </div>
     `;
     return;
