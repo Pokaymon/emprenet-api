@@ -30,8 +30,20 @@ export const initSocket = async (httpServer) => {
     }
   });
 
+  const onlineUsers = new Map(); // userId -> socketId[]
+
   io.on('connection', (socket) => {
     console.log(`✅ Usuario conectado: ${socket.user.username}`);
+    const userId = socket.user.id;
+
+    // Guardar usuario como conectado
+    if (!onlineUsers.has(userId)) {
+      onlineUsers.set(userId, []);
+    }
+    onlineUsers.get(userId).push(socket.io);
+
+    // Notificar el estado a seguidores del usuario
+    io.emit("user:status", { userId, status: "online" });
 
     // Unir socket a sala identificada por su id
     socket.join(socket.user.id);
@@ -56,9 +68,27 @@ export const initSocket = async (httpServer) => {
 
     socket.on('disconnect', () => {
       console.log(`⛔ Usuario desconectado: ${socket.user.username}`);
+
+      // Eliminar socket de la lista
+      const sockets = onlineUsers.get(userId) || [];
+      const updatedSockets = sockets.filter((id) => id !== socket.id);
+
+      if (updatedSockets.length === 0) {
+        onlineUsers.delete(userId);
+
+        // Notificar que esta offline
+        io.emit("user:status", { userId, status: "offline" });
+      } else {
+        onlineUsers.set(userId, updatedSockets);
+      }
     });
   });
 };
+
+// Exportar helper para determinar stado del usuario
+export function isUserOnline(userId) {
+  return onlineUsers.has(userId);
+}
 
 const setupRedisAdapter = async (ioInstance) => {
   const { createAdapter } = await import('socket.io-redis');

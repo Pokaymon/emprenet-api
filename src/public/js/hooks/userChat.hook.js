@@ -30,6 +30,18 @@ export function initFollowingSocket(socket, els) {
     const users = await fetchFollowing();
     renderFollowing(users, els);
   });
+
+  // Cuando cambie el estado de un usuario
+  socket.on("user:status", ({ userId, status }) => {
+    const chatList = els.chatContainer?.querySelector('[data-role="chat-users-list"]');
+    if (!chatList) return;
+
+    const userEl = chatList.querySelector(`[data-user-id="${userId}"] span`);
+    if (userEl) {
+      userEl.classList.remove("bg-gray-400", "bg-green-500");
+      userEl.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
+    }
+  });
 }
 
 function renderFollowing(users, els) {
@@ -72,7 +84,7 @@ function renderFollowing(users, els) {
         <p class="font-medium text-sm text-gray-900 dark:text-white">${user.username}</p>
         <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Último mensaje...</p>
       </div>
-      <span class="w-3 h-3 bg-gray-400 rounded-full"></span>
+      <span class="w-3 h-3 ${user.online ? "bg-green-500" : "bg-gray-400"} rounded-full"></span>
     `;
     div.addEventListener("click", () => {
       els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");

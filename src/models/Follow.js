@@ -1,4 +1,5 @@
 import db from '../db/database.js';
+import { isUserOnline } from '../sockets/socket.js';
 
 const Follow = {
   async follow(followerId, followedId) {
@@ -32,7 +33,11 @@ const Follow = {
        WHERE f.follower_id = ?`,
        [followerId]
     );
-    return rows;
+
+    return rows.map(user => ({
+      ...user,
+      online: isUserOnline(user.id) // Estado actual
+    }));
   }
 };
 
