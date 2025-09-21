@@ -1,4 +1,5 @@
 import { alertError, alertSuccess, alertWarning } from '../utils/alert.utils.js';
+import { toggleVisibility } from '../utils/ui.utils.js';
 
 export async function handleLogin(e, form, onSuccess) {
   e.preventDefault();
@@ -17,11 +18,14 @@ export async function handleLogin(e, form, onSuccess) {
 
     localStorage.setItem('token', data.token);
 
+    form.reset();
+
+    const loginFormContainer = document.querySelector('[data-role="login-form-container"]');
+    toggleVisibility(loginFormContainer, false);
+
     const swalPromise = data.warning
       ? alertWarning(data.warning)
       : alertSuccess(data.message);
-
-    form.reset();
 
     // Esperar a cerrar alerta
     await swalPromise;

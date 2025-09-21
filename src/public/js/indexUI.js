@@ -108,7 +108,15 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI(els);
 
       const token = localStorage.getItem("token");
-      if (token) {
+      const isAuthenticated = Boolean(token);
+
+      if (!isAuthenticated) {
+	els.loginFormContainer.classList.add('opacity-0');
+        els.loginFormContainer.classList.add('pointer-events-none');
+        els.loginFormContainer.classList.remove('opacity-100');
+      }
+
+      if (isAuthenticated) {
         connectSocket(token, els);
       }
     })
