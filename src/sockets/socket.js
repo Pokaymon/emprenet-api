@@ -4,6 +4,7 @@ import config from '../config.js';
 import Message from '../models/Message.js';
 
 let io;
+const onlineUsers = new Map(); // userId -> socketId[]
 
 export const initSocket = async (httpServer) => {
   io = new Server(httpServer, {
@@ -29,8 +30,6 @@ export const initSocket = async (httpServer) => {
       return next(new Error('Token inválido'));
     }
   });
-
-  const onlineUsers = new Map(); // userId -> socketId[]
 
   io.on('connection', (socket) => {
     console.log(`✅ Usuario conectado: ${socket.user.username}`);
