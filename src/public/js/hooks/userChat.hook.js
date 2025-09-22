@@ -74,6 +74,8 @@ function renderFollowing(users, els) {
   users.forEach(user => {
     const div = document.createElement("div");
     div.className = "flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors";
+    div.setAttribute("data-user-id", user.id);
+
     div.innerHTML = `
       <img
         src="${user.avatar || "https://cdn.emprenet.work/Icons/default-avatar-2.webp"}"

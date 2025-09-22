@@ -39,7 +39,7 @@ export const initSocket = async (httpServer) => {
     if (!onlineUsers.has(userId)) {
       onlineUsers.set(userId, []);
     }
-    onlineUsers.get(userId).push(socket.io);
+    onlineUsers.get(userId).push(socket.id);
 
     // Notificar el estado a seguidores del usuario
     io.emit("user:status", { userId, status: "online" });
