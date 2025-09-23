@@ -41,12 +41,32 @@ export function initFollowingSocket(socket, els) {
       userEl.classList.remove("bg-gray-400", "bg-green-500");
       userEl.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
     }
+
+    // Si el usuario está en la conversación activa, actualizar header
+    const conversation = els.chatConversation;
+    if (conversation && !conversation.classList.contains("opacity-0")) {
+      const usernameEl = conversation.querySelector("p.font-medium");
+      if (usernameEl && usernameEl.textContent === userId) {
+        const statusEl = conversation.querySelector("p.text-xs");
+        if (statusEl) {
+          statusEl.innerHTML = `
+            <span class="w-2 h-2 rounded-full ${status === "online" ? "bg-green-500" : "bg-gray-400"}"></span>
+            ${status === "online" ? "En línea" : "Desconectado"}
+          `;
+        }
+      }
+    }
   });
 }
 
 function renderFollowing(users, els) {
   const chatList = els.chatContainer?.querySelector('[data-role="chat-users-list"]');
   if (!chatList) return;
+
+  div.addEventListener("click"; () => {
+    renderConversationHeader(user, els);
+    els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
+  });
 
   chatList.innerHTML = "";
 
@@ -93,4 +113,40 @@ function renderFollowing(users, els) {
     });
     chatList.appendChild(div);
   });
+}
+
+function renderConversationHeader(user, els) {
+  const conversation = els.chatConversation;
+  if (!conversation) return;
+
+  const header = conversation.querySelector(".p-4.border-b");
+  if (!header) return;
+
+  header.innerHTML = `
+    <div class="flex items-center gap-3">
+      <img
+        src="${user.avatar || "https://cdn.emprenet.work/Icons/default-avatar-2.webp"}"
+        alt="Avatar"
+        class="w-10 h-10 rounded-full object-cover"
+      />
+      <div>
+        <p class="font-medium text-sm text-gray-900 dark:text-white">${user.username}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full ${user.online ? "bg-green-500" : "bg-gray-400"}"></span>
+          ${user.online ? "En línea" : "Desconectado"}
+        </p>
+      </div>
+    </div>
+
+    <button
+      data-role="chat-back"
+      class="p-2 cursor-pointer rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300"
+      aria-label="Volver"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+  `;
 }
