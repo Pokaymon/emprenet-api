@@ -42,20 +42,22 @@ export function initFollowingSocket(socket, els) {
       userEl.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
     }
 
-  // Actualizar header de la conversación activa
-  const conversation = els.chatConversation;
-  if (conversation && !conversation.classList.contains("opacity-0")) {
-    const activeUserEl = conversation.querySelector(`[data-user-id="${userId}"]`);
-    if (activeUserEl) {
+    // Actualizar header de la conversación activa
+    const conversation = els.chatConversation;
+    const activeUserId = conversation?.querySelector("[data-conversation-user-id]")?.getAttribute("data-conversation-user-id");
+
+    if (conversation && activeUserId === String(userId)) {
       const statusEl = conversation.querySelector("[data-role='conversation-status']");
-        if (statusEl) {
-          statusEl.innerHTML = `
-            <span class="w-2 h-2 rounded-full ${status === "online" ? "bg-green-500" : "bg-gray-400"}"></span>
-            ${status === "online" ? "En línea" : "Desconectado"}
-          `;
+      if (statusEl) {
+        const dot = statusEl.querySelector("span");
+        if (dot) {
+          dot.classList.remove("bg-gray-400", "bg-green-500");
+          dot.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
         }
+        statusEl.lastChild.textContent = status === "online" ? "En línea" : "Desconectado"; 
       }
     }
+
   });
 }
 
@@ -124,6 +126,8 @@ function renderConversationHeader(user, els) {
 
   const header = conversation.querySelector(".p-4.border-b");
   if (!header) return;
+
+  header.setAttribute("data-conversation-user-id", user.id);
 
   header.innerHTML = `
     <div class="flex items-center gap-3">
