@@ -73,12 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
     els.chatOverlay.classList.toggle('pointer-events-none');
   });
 
-  // Abrir conversación
-  els.chatUser?.addEventListener("click", () => {
-    els.chatConversation.classList.remove('opacity-0');
-    els.chatConversation.classList.remove('pointer-events-none');
-  });
-
   // Cerrar conversación
   els.chatBack.addEventListener("click", () => {
     els.chatConversation.classList.add('opacity-0');

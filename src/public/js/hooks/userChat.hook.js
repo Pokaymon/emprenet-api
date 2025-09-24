@@ -63,11 +63,6 @@ function renderFollowing(users, els) {
   const chatList = els.chatContainer?.querySelector('[data-role="chat-users-list"]');
   if (!chatList) return;
 
-  div.addEventListener("click"; () => {
-    renderConversationHeader(user, els);
-    els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
-  });
-
   chatList.innerHTML = "";
 
   if (users.length === 0) {
@@ -108,9 +103,17 @@ function renderFollowing(users, els) {
       </div>
       <span class="w-3 h-3 ${user.online ? "bg-green-500" : "bg-gray-400"} rounded-full"></span>
     `;
+
     div.addEventListener("click", () => {
+      renderConversationHeader(user, els);
       els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
+
+      const backBtn = els.chatConversation.querySelector("[data-role='chat-back']");
+      backBtn?.addEventListener("click", () => {
+        els.chatConversation.classList.add("opacity-0", "pointer-events-none");
+      });
     });
+
     chatList.appendChild(div);
   });
 }
