@@ -42,12 +42,12 @@ export function initFollowingSocket(socket, els) {
       userEl.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
     }
 
-    // Si el usuario está en la conversación activa, actualizar header
+    // Actualizar header de la conversación activa
     const conversation = els.chatConversation;
     if (conversation && !conversation.classList.contains("opacity-0")) {
       const usernameEl = conversation.querySelector("p.font-medium");
       if (usernameEl && usernameEl.dataset.userId === userId) {
-        const statusEl = conversation.querySelector("p.text-xs");
+        const statusEl = conversation.querySelector("[data-role='conversation-status']");
         if (statusEl) {
           statusEl.innerHTML = `
             <span class="w-2 h-2 rounded-full ${status === "online" ? "bg-green-500" : "bg-gray-400"}"></span>
@@ -134,7 +134,7 @@ function renderConversationHeader(user, els) {
       />
       <div>
         <p data-user-id="${user.id}" class="font-medium text-sm text-gray-900 dark:text-white">${user.username}</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+        <p data-role="conversation-status" class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
           <span class="w-2 h-2 rounded-full ${user.online ? "bg-green-500" : "bg-gray-400"}"></span>
           ${user.online ? "En línea" : "Desconectado"}
         </p>
