@@ -42,12 +42,12 @@ export function initFollowingSocket(socket, els) {
       userEl.classList.add(status === "online" ? "bg-green-500" : "bg-gray-400");
     }
 
-    // Actualizar header de la conversación activa
-    const conversation = els.chatConversation;
-    if (conversation && !conversation.classList.contains("opacity-0")) {
-      const usernameEl = conversation.querySelector("p.font-medium");
-      if (usernameEl && usernameEl.dataset.userId === userId) {
-        const statusEl = conversation.querySelector("[data-role='conversation-status']");
+  // Actualizar header de la conversación activa
+  const conversation = els.chatConversation;
+  if (conversation && !conversation.classList.contains("opacity-0")) {
+    const activeUserEl = conversation.querySelector(`[data-user-id="${userId}"]`);
+    if (activeUserEl) {
+      const statusEl = conversation.querySelector("[data-role='conversation-status']");
         if (statusEl) {
           statusEl.innerHTML = `
             <span class="w-2 h-2 rounded-full ${status === "online" ? "bg-green-500" : "bg-gray-400"}"></span>
