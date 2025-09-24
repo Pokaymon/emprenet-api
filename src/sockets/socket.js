@@ -1,10 +1,14 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
-import Message from '../models/Message.js';
+import {
+  addOnlineUser,
+  removeOnlineUser,
+  handlePrivateMessage,
+  isUserOnline,
+} from '../utils/socket.utils.js';
 
 let io;
-const onlineUsers = new Map(); // userId -> socketId[]
 
 export const initSocket = async (httpServer) => {
   io = new Server(httpServer, {
@@ -26,68 +30,42 @@ export const initSocket = async (httpServer) => {
       const decoded = jwt.verify(token, config.jwt_secret);
       socket.user = decoded;
       next();
-    } catch (err) {
+    } catch {
       return next(new Error('Token inválido'));
     }
   });
 
   io.on('connection', (socket) => {
-    console.log(`✅ Usuario conectado: ${socket.user.username}`);
     const userId = socket.user.id;
+    console.log(`✅ Usuario conectado: ${socket.user.username}`);
 
-    // Guardar usuario como conectado
-    if (!onlineUsers.has(userId)) {
-      onlineUsers.set(userId, []);
-    }
-    onlineUsers.get(userId).push(socket.id);
+    // Guardar usuario
+    addOnlineUser(userId, socket.id);
 
-    // Notificar el estado a seguidores del usuario
+    // Notificar online
     io.emit("user:status", { userId, status: "online" });
 
-    // Unir socket a sala identificada por su id
-    socket.join(socket.user.id);
+    // Unirse a su propia sala
+    socket.join(userId);
 
-    socket.on('private_message', async ({ to, content }) => {
-      const message = new Message({
-        from: socket.user.id,
-        to,
-        content,
-        timestamp: new Date(),
-      });
-
-      await message.save();
-
-      // Enviar a sala del destinatario
-      io.to(to).emit('private_message', {
-        from: socket.user.id,
-        content,
-        timestamp: message.timestamp,
-      });
-    });
+    // Eventos
+    socket.on('private_message', (data) =>
+      handlePrivateMessage(io, socket, data)
+    );
 
     socket.on('disconnect', () => {
       console.log(`⛔ Usuario desconectado: ${socket.user.username}`);
 
-      // Eliminar socket de la lista
-      const sockets = onlineUsers.get(userId) || [];
-      const updatedSockets = sockets.filter((id) => id !== socket.id);
+      const isCompletelyOffline = removeOnlineUser(userId, socket.id);
 
-      if (updatedSockets.length === 0) {
-        onlineUsers.delete(userId);
-
-        // Notificar que esta offline
+      if (isCompletelyOffline) {
         io.emit("user:status", { userId, status: "offline" });
-      } else {
-        onlineUsers.set(userId, updatedSockets);
       }
     });
   });
 };
 
-// Exportar helper para determinar stado del usuario
-export function isUserOnline(userId) {
-  return onlineUsers.has(userId);
-}
+export { isUserOnline };
 
 const setupRedisAdapter = async (ioInstance) => {
   const { createAdapter } = await import('socket.io-redis');
