@@ -46,7 +46,7 @@ export function initFollowingSocket(socket, els) {
     const conversation = els.chatConversation;
     if (conversation && !conversation.classList.contains("opacity-0")) {
       const usernameEl = conversation.querySelector("p.font-medium");
-      if (usernameEl && usernameEl.textContent === userId) {
+      if (usernameEl && usernameEl.dataset.userId === userId) {
         const statusEl = conversation.querySelector("p.text-xs");
         if (statusEl) {
           statusEl.innerHTML = `
@@ -133,7 +133,7 @@ function renderConversationHeader(user, els) {
         class="w-10 h-10 rounded-full object-cover"
       />
       <div>
-        <p class="font-medium text-sm text-gray-900 dark:text-white">${user.username}</p>
+        <p data-user-id="${user.id}" class="font-medium text-sm text-gray-900 dark:text-white">${user.username}</p>
         <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
           <span class="w-2 h-2 rounded-full ${user.online ? "bg-green-500" : "bg-gray-400"}"></span>
           ${user.online ? "En línea" : "Desconectado"}
