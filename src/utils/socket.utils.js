@@ -48,10 +48,16 @@ export async function handlePrivateMessage(io, socket, { to, content }) {
 
   await message.save();
 
-  // Emitir al destinatario
-  io.to(to).emit('private_message', {
+  const payload = {
     from: socket.user.id,
+    to,
     content,
     timestamp: message.timestamp,
-  });
+  };
+
+  // Emitir al destinatario
+  io.to(to).emit('private_message', payload);
+
+  // Emitir de vuelta al remitente
+  socket.emit("private_message", payload);
 }
