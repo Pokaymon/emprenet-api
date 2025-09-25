@@ -11,6 +11,7 @@ import session from 'express-session';
 /* Import Routes */
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+import messageRoutes from './routes/message.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,6 +43,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 /* API Routes */
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/messages', messageRoutes);
 
 /* Redirección no permitida GET en /api
 app.use('/api', (req, res, next) => {
