@@ -5,6 +5,8 @@ import { renderMessages, appendMessage } from "../renders/messages.render.js";
 
 import { initMessageInput } from "./messageInput.hook.js";
 
+let currentChatUserId = null;
+
 async function fetchFollowing() {
   const token = localStorage.getItem("token");
   if (!token) return [];
@@ -52,6 +54,17 @@ export function initFollowingSocket(socket, els) {
   socket.on("user:status", ({ userId, status }) => {
     updateStatus(userId, status, els);
   });
+
+  // Listener global de mensajes privados
+  socket.on("private_message", (msg) => {
+    if (msg.from === currentChatUserId || msg.to === currentChatUserId) {
+      // Mensaje pertenece a la conversación actual
+      const type = msg.from === localStorage.getItem("userId") ? "sent" : "received";
+    appendMessage(msg, els, type);
+    } else {
+      console.log("Nuevo mensaje de otro usuario:", msg);
+    }
+  });
 }
 
 function renderFollowing(users, els, socket) {
@@ -68,6 +81,8 @@ function renderFollowing(users, els, socket) {
   users.forEach((user) => {
     const item = renderChatItem(user);
     item.addEventListener("click", async () => {
+      currentChatUserId = user.id; // Conversación activa
+
       renderConversationHeader(user, els);
       els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
 
@@ -75,19 +90,13 @@ function renderFollowing(users, els, socket) {
       const messages = await fetchMessages(user.id);
       renderMessages(messages, els, user);
 
-      // Escuchar mensajes nuevos
-      socket.off("private_message"); // prevenir duplicados
-      socket.on("private_message", (msg) => {
-        if (msg.from === user.id || msg.to === user.id) {
-          appendMessage(msg, els, msg.from === user.id ? "received" : "sent");
-        }
-      });
-
+      // Iniciar input para la conversación
       initMessageInput(socket, user.id, els);
 
       // Volver
       const backBtn = els.chatConversation.querySelector("[data-role='chat-back']");
       backBtn?.addEventListener("click", () => {
+        currentChatUserId = null; // Cerrar conversación
         els.chatConversation.classList.add("opacity-0", "pointer-events-none");
       });
     });
