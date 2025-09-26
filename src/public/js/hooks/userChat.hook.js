@@ -1,6 +1,9 @@
 import { showAlert } from "../utils/alert.utils.js";
 import { renderEmptyChatList, renderChatItem } from "../renders/chatList.render.js";
 import { renderConversationHeader } from "../renders/conversationHeader.render.js";
+import { renderMessages, appendMessage } from "../renders/messages.render.js";
+
+import { initMessageInput } from "./messageInput.hook.js";
 
 async function fetchFollowing() {
   const token = localStorage.getItem("token");
@@ -22,13 +25,28 @@ async function fetchFollowing() {
   }
 }
 
+async function fetchMessages(userId) {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await fetch(`https://api.emprenet.work/messages/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Error al obtener mensajes");
+    const data = await res.json();
+    return data.messages || [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 export function initFollowingSocket(socket, els) {
   // Carga inicial de seguidos
-  fetchFollowing().then((users) => renderFollowing(users, els));
+  fetchFollowing().then((users) => renderFollowing(users, els, socket));
 
   socket.on("following:updated", async () => {
     const users = await fetchFollowing();
-    renderFollowing(users, els);
+    renderFollowing(users, els, socket);
   });
 
   socket.on("user:status", ({ userId, status }) => {
@@ -36,7 +54,7 @@ export function initFollowingSocket(socket, els) {
   });
 }
 
-function renderFollowing(users, els) {
+function renderFollowing(users, els, socket) {
   const chatList = els.chatContainer?.querySelector('[data-role="chat-users-list"]');
   if (!chatList) return;
 
@@ -49,10 +67,25 @@ function renderFollowing(users, els) {
 
   users.forEach((user) => {
     const item = renderChatItem(user);
-    item.addEventListener("click", () => {
+    item.addEventListener("click", async () => {
       renderConversationHeader(user, els);
       els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
 
+      // Cargar historial
+      const messages = await fetchMessages(user.id);
+      renderMessages(messages, els, user);
+
+      // Escuchar mensajes nuevos
+      socket.off("private_message"); // prevenir duplicados
+      socket.on("private_message", (msg) => {
+        if (msg.from === user.id || msg.to === user.id) {
+          appendMessage(msg, els, msg.from === user.id ? "received" : "sent");
+        }
+      });
+
+      initMessageInput(socket, user.id, els);
+
+      // Volver
       const backBtn = els.chatConversation.querySelector("[data-role='chat-back']");
       backBtn?.addEventListener("click", () => {
         els.chatConversation.classList.add("opacity-0", "pointer-events-none");
