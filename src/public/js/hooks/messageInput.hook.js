@@ -6,24 +6,21 @@ export function initMessageInput(socket, userId, els) {
 
   if (!form || !input) return;
 
-  function sendMessage(to, content) {
-    socket.emit("private_message", { to, content });
-  }
+  // Clonar el formulario para limpiar listeners anteriores
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
 
-  // Limpiar listeners previos
-  form.onsubmit = null;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // Evitar ocultar chatConversation
+  newForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
     const content = input.value.trim();
     if (!content) return;
 
-    // Enviar al backend
-    sendMessage(userId, content);
+    // Emitir al backend
+    socket.emit("private_message", { to: userId, content });
 
-    // Render inmediato
-    appendMessage({ content }, els, "sent");
+    // Render inmediato en el cliente
+    appendMessage({ content, to: userId }, els, "sent");
 
     input.value = "";
   });
