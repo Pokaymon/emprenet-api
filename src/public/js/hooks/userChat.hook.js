@@ -1,4 +1,6 @@
 import { showAlert } from "../utils/alert.utils.js";
+import { getCurrentUserId } from "../utils/token.utils.js";
+
 import { renderEmptyChatList, renderChatItem } from "../renders/chatList.render.js";
 import { renderConversationHeader } from "../renders/conversationHeader.render.js";
 import { renderMessages, appendMessage } from "../renders/messages.render.js";
@@ -43,6 +45,8 @@ async function fetchMessages(userId) {
 }
 
 export function initFollowingSocket(socket, els) {
+  const currentUserId = getCurrentUserId();
+
   // Carga inicial de seguidos
   fetchFollowing().then((users) => renderFollowing(users, els, socket));
 
@@ -59,7 +63,7 @@ export function initFollowingSocket(socket, els) {
   socket.on("private_message", (msg) => {
     if (msg.from === currentChatUserId || msg.to === currentChatUserId) {
       // Mensaje pertenece a la conversación actual
-      const type = msg.from === localStorage.getItem("userId") ? "sent" : "received";
+      const type = msg.from === currentUserId ? "sent" : "received";
     appendMessage(msg, els, type);
     } else {
       console.log("Nuevo mensaje de otro usuario:", msg);
@@ -85,6 +89,16 @@ function renderFollowing(users, els, socket) {
 
       renderConversationHeader(user, els);
       els.chatConversation?.classList.remove("opacity-0", "pointer-events-none");
+
+      // Vaciar conversación inmediatamente
+      const container = els.chatConversation?.querySelector(".flex-1");
+      if (container) {
+	container.innerHTML = `
+          <div class="flex justify-center items-center flex-1 text-gray-500 text-sm">
+            Cargando mensajes...
+          </div>
+        `;
+      }
 
       // Cargar historial
       const messages = await fetchMessages(user.id);

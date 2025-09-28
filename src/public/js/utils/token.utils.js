@@ -27,3 +27,10 @@ export function clearAuthToken() {
   localStorage.removeItem('token');
 }
 
+export function getCurrentUserId() {
+  const token = getAuthToken();
+  if (!token) return null;
+
+  const payload = parseJwt(token);
+  return payload?.id || null;
+}

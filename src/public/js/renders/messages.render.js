@@ -1,11 +1,15 @@
+import { getCurrentUserId } from "../utils/token.utils.js";
+
 export function renderMessages(messages, els, user) {
+  const currentUserId = getCurrentUserId();
+
   const container = els.chatConversation?.querySelector(".flex-1");
   if (!container) return;
 
   container.innerHTML = "";
 
   messages.forEach((msg) => {
-    const type = msg.from === localStorage.getItem("userId") ? "sent" : "received";
+    const type = msg.from === currentUserId ? "sent" : "received";
     appendMessage(msg, els, type);
   });
 }
