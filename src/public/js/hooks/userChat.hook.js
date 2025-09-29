@@ -9,6 +9,10 @@ import { initMessageInput } from "./messageInput.hook.js";
 
 let currentChatUserId = null;
 
+export function getCurrentChatUserId() {
+  return currentChatUserId;
+}
+
 async function fetchFollowing() {
   const token = localStorage.getItem("token");
   if (!token) return [];
@@ -61,12 +65,17 @@ export function initFollowingSocket(socket, els) {
 
   // Listener global de mensajes privados
   socket.on("private_message", (msg) => {
-    if (msg.from === currentChatUserId || msg.to === currentChatUserId) {
-      // Mensaje pertenece a la conversación actual
+    const chatUserId = getCurrentChatUserId();
+
+    if (!chatUserId) return; // no hay chat abierto
+
+    // Mensaje pertenece a la conversación activa
+    if (msg.from === chatUserId || msg.to === chatUserId) {
       const type = msg.from === currentUserId ? "sent" : "received";
-    appendMessage(msg, els, type);
+      appendMessage(msg, els, type);
     } else {
-      console.log("Nuevo mensaje de otro usuario:", msg);
+      console.log("📩 Nuevo mensaje de otro usuario:", msg);
+      // Aquí podrías mostrar badge de "nuevo mensaje" en lista
     }
   });
 }

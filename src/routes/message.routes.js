@@ -7,8 +7,8 @@ const router = express.Router();
 // Historial con un usuario
 router.get("/:userId", authMiddleware, async (req, res) => {
   try {
-    const { userId } = req.params;
-    const myId = req.user.id;
+    const userId = Number(req.params.userId);
+    const myId = Number(req.user.id);
 
     const messages = await Message.find({
       $or: [

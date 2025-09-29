@@ -40,8 +40,8 @@ export function isUserOnline(userId) {
  */
 export async function handlePrivateMessage(io, socket, { to, content }) {
   const message = new Message({
-    from: socket.user.id,
-    to,
+    from: Number(socket.user.id),
+    to: Number(to),
     content,
     timestamp: new Date(),
   });
@@ -49,8 +49,8 @@ export async function handlePrivateMessage(io, socket, { to, content }) {
   await message.save();
 
   const payload = {
-    from: socket.user.id,
-    to,
+    from: message.from,
+    to: message.to,
     content,
     timestamp: message.timestamp,
   };
