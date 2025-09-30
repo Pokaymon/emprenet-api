@@ -38,7 +38,7 @@ export function isUserOnline(userId) {
 /**
  * Maneja el envío de mensajes privados
  */
-export async function handlePrivateMessage(io, socket, { to, content }) {
+export async function handlePrivateMessage(io, socket, { to, content, tempId }) {
   const message = new Message({
     from: Number(socket.user.id),
     to: Number(to),
@@ -49,15 +49,16 @@ export async function handlePrivateMessage(io, socket, { to, content }) {
   await message.save();
 
   const payload = {
+    id: message._id,
     from: message.from,
     to: message.to,
-    content,
+    content: message.content,
     timestamp: message.timestamp,
   };
 
   // Emitir al destinatario
   io.to(to).emit('private_message', payload);
 
-  // Emitir de vuelta al remitente
-  socket.emit("private_message", payload);
+  // Confirmar al remitente
+  socket.emit("message:ack", { ...payload, tempId });
 }

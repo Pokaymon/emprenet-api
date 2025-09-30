@@ -3,7 +3,7 @@ import { getCurrentUserId } from "../utils/token.utils.js";
 
 import { renderEmptyChatList, renderChatItem } from "../renders/chatList.render.js";
 import { renderConversationHeader } from "../renders/conversationHeader.render.js";
-import { renderMessages, appendMessage } from "../renders/messages.render.js";
+import { renderMessages, appendMessage, updateMessage } from "../renders/messages.render.js";
 
 import { initMessageInput } from "./messageInput.hook.js";
 
@@ -63,20 +63,20 @@ export function initFollowingSocket(socket, els) {
     updateStatus(userId, status, els);
   });
 
-  // Listener global de mensajes privados
   socket.on("private_message", (msg) => {
     const chatUserId = getCurrentChatUserId();
-
-    if (!chatUserId) return; // no hay chat abierto
+    if (!chatUserId) return;
 
     // Mensaje pertenece a la conversación activa
     if (msg.from === chatUserId || msg.to === chatUserId) {
       const type = msg.from === currentUserId ? "sent" : "received";
       appendMessage(msg, els, type);
-    } else {
-      console.log("📩 Nuevo mensaje de otro usuario:", msg);
-      // Aquí podrías mostrar badge de "nuevo mensaje" en lista
     }
+  });
+
+  // Confirmación del server
+  socket.on("message:ack", (msg) => {
+    updateMessage(msg.tempId, msg.id);
   });
 }
 

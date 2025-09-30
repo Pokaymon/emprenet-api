@@ -1,4 +1,5 @@
-import { appendMessage } from "../renders/messages.render.js";
+import { appendMessage, updateMessage } from "../renders/messages.render.js";
+import { getCurrentUserId } from "../utils/token.utils.js";
 
 export function initMessageInput(socket, userId, els) {
   const form = els.chatConversation?.querySelector("[data-role='chat-form']");
@@ -9,15 +10,16 @@ export function initMessageInput(socket, userId, els) {
   // Definir el handler
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const content = input.value.trim();
     if (!content) return;
 
-    // Enviar al backend
-    socket.emit("private_message", { to: userId, content });
+    const tempId = Date.now();
 
-    // Render inmediato en el cliente
-    appendMessage({ content, from: localStorage.getItem("userId"), to: userId }, els, "sent");
+    // Pintar inmediatamente en UI
+    appendMessage({ content, from: getCurrentUserId(), to: userId, tempId }, els, "sent");
+
+    // Enviar al backend
+    socket.emit("private_message", { to: userId, content, tempId });
 
     input.value = "";
   };
