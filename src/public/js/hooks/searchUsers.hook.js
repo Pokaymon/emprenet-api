@@ -23,6 +23,9 @@ async function searchUsers(query, resultsContainer) {
   const token = localStorage.getItem('token');
   if (!token) return;
 
+  const overlay = document.querySelector('[data-role="search-overlay"]');
+  const searchInput = document.querySelector('[data-role="search-input"]');
+
   const mode = query.startsWith('@') ? 'exact' : 'partial';
   const url = `/users/search?q=${encodeURIComponent(query)}&mode=${mode}`;
 
@@ -44,18 +47,15 @@ async function searchUsers(query, resultsContainer) {
     }
 
     const data = await res.json();
-    let results = [];
-
-    if (mode === 'exact') {
-      results = data ? [data] : [];
-    } else {
-      results = data.results || [];
-    }
+    let results = mode === 'exact' ? (data ? [data] : []) : (data.results || []);
 
     if (!results.length) {
       resultsContainer.innerHTML = `<p class="text-gray-500 text-sm px-3">Sin resultados</p>`;
+      overlay.classList.remove("opacity-100", "pointer-events-auto");
       return;
     }
+
+    results = results.slice(0, 5);
 
     resultsContainer.innerHTML = results.map(user => `
       <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" data-username="${user.username}">
@@ -67,6 +67,10 @@ async function searchUsers(query, resultsContainer) {
       </div>
     `).join('');
 
+
+    overlay.classList.add("opacity-100", "pointer-events-auto");
+    overlay.classList.remove("opacity-0", "pointer-events-none");
+
     // Agregar listeners para abrir modal
     resultsContainer.querySelectorAll("[data-username]").forEach(el => {
       el.addEventListener("click", () => {
@@ -74,6 +78,19 @@ async function searchUsers(query, resultsContainer) {
         showUserProfileModal({ username });
       });
     });
+
+    // Listener para cerrar si haces click en overlay
+    overlay.onclick = (e) => {
+      if (e.target === overlay) {
+        // Limpiar input y resultados
+        searchInput.value = '';
+        resultsContainer.innetHTML = '';
+
+        // Ocultar overlay
+        overlay.classList.add("opacity-0", "pointer-events-none");
+        overlay.classList.remove("opacity-100", "pointer-events-auto");
+      }
+    };
 
   } catch (err) {
     console.error('Error al buscar usuarios:', err);

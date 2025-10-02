@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // chat
     chatToggle: document.querySelector('[data-role="chat-toggle"]'),
     chatClose: document.querySelector('[data-role="chat-close"]'),
-    chatBack: document.querySelector('[data-role="chat-back"]'),
     chatContainer: document.querySelector('[data-role="chat-container"]'),
     chatOverlay: document.querySelector('[data-role="chat-overlay"]'),
     chatUsersList: document.querySelector('[data-role="chat-users-list"]'),
@@ -71,12 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
   els.chatClose?.addEventListener("click", () => {
     els.chatOverlay.classList.toggle('opacity-0');
     els.chatOverlay.classList.toggle('pointer-events-none');
-  });
-
-  // Cerrar conversación
-  els.chatBack.addEventListener("click", () => {
-    els.chatConversation.classList.add('opacity-0');
-    els.chatConversation.classList.add('pointer-events-none');
   });
 
   // Mostrar login form
