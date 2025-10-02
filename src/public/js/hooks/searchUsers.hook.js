@@ -55,8 +55,6 @@ async function searchUsers(query, resultsContainer) {
       return;
     }
 
-    results = results.slice(0, 5);
-
     resultsContainer.innerHTML = results.map(user => `
       <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" data-username="${user.username}">
         <img src="${user.avatar || 'https://cdn.emprenet.work/Icons/default-avatar-2.webp'}" class="w-10 h-10 rounded-full object-cover" alt="Avatar">
@@ -84,7 +82,7 @@ async function searchUsers(query, resultsContainer) {
       if (e.target === overlay) {
         // Limpiar input y resultados
         searchInput.value = '';
-        resultsContainer.innetHTML = '';
+        resultsContainer.innerHTML = '';
 
         // Ocultar overlay
         overlay.classList.add("opacity-0", "pointer-events-none");
